@@ -1,0 +1,43 @@
+{
+	"_id": {
+		"$oid": "5cee66fba4f08543ec381303"
+	},
+	"vehicle": [
+		{
+			"vehicleId": {
+				"$oid": "5cec46211b8c6c3f78240774"
+			},
+			"destination": [
+				{
+					"destinationId": {
+						"$oid": "5ce80b22293b8439240d18d4"
+					},
+					"demandId": [
+						{
+							"$oid": "5cec16f1f5b14618143ac89e"
+						},
+						{
+							"$oid": "5cec2c6eba5efb446c503817"
+						}
+					]
+				},
+				{
+					"destinationId": {
+						"$oid": "5ce80b26293b8439240d18d6"
+					},
+					"demandId": [
+						{
+							"$oid": "5cec2cb2ba5efb446c503818"
+						}
+					]
+				}
+			]
+		},
+		{
+			"vehicleId": {
+				"$oid": "5cec59997f0d643f78d1e1e2"
+			},
+			"destination": []
+		}
+	]
+}

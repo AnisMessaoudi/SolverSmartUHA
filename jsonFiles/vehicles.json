@@ -1,0 +1,119 @@
+{
+	"_id": {
+		"$oid": "5cec46211b8c6c3f78240774"
+	},
+	"name": "Alpha",
+	"energy": {
+		"$numberInt": "4324"
+	},
+	"destination": {
+		"id": {
+			"$oid": "5ce80b22293b8439240d18d4"
+		},
+		"name": "Lumiere",
+		"altitude": {
+			"$numberDouble": "20.7"
+		}
+	},
+	"humidity": {
+		"$numberInt": "33"
+	},
+	"temperature": {
+		"$numberInt": "21"
+	},
+	"lastPosition": "BU",
+	"planning": [
+		{
+			"id": {
+				"$oid": "5ce80b22293b8439240d18d4"
+			},
+			"name": "Lumière",
+			"altitude": {
+				"$numberDouble": "20.7"
+			}
+		},
+		{
+			"id": {
+				"$oid": "5cec2a4edaa0821eec2d9802"
+			},
+			"name": "BU",
+			"altitude": {
+				"$numberDouble": "9.1"
+			}
+		}
+	],
+	"mailboxes": [
+		{
+			"name": "smallBox",
+			"isEmpty": true,
+			"detination": "",
+			"_id": {
+				"$numberInt": "1"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "smallBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "2"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "smallBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "3"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "smallBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "4"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "smallBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "5"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "largeBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "6"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "largeBox",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "7"
+			},
+			"demandId": ""
+		},
+		{
+			"name": "cargo",
+			"isEmpty": true,
+			"destination": "",
+			"_id": {
+				"$numberInt": "8"
+			},
+			"demandId": ""
+		}
+	]
+}
