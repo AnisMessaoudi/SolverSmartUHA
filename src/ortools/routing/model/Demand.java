@@ -2,16 +2,34 @@ package ortools.routing.model;
 
 public class Demand {
     
+    public enum Request {
+	smallLetter,
+	largeLetter,
+	cargo1,
+	cargo3,
+	cargo6;
+    }
+
+    public enum State {
+	waitingConfirmation,
+	pendingOrigin,
+	pendingdestination,
+	inProgress,
+	pending, 
+	cancelled,
+	served;
+    }
+    
     private String id;
     private int isUrgent;
-    private String request;
+    private Request request;
     private String originId;
     private String destinationId;
     private long deliveryTime;
-    private String state;
+    private State state;
     
-    public Demand(String id, int isUrgent, String request, String originId, String destinationId, long deliveryTime,
-	    String state) {
+    public Demand(String id, int isUrgent, Request request, String originId, String destinationId, long deliveryTime,
+	    State state) {
 	super();
 	this.id = id;
 	this.isUrgent = isUrgent;

@@ -11,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import ortools.routing.model.Demand;
+import ortools.routing.model.Demand.Request;
+import ortools.routing.model.Demand.State;
 import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
 
@@ -94,11 +96,11 @@ public class JsonDecryptor {
 	    
 	    String id= "";
 	    int isUrgent=0;
-	    String request="";
+	    Request request = null;
 	    String originId="";
 	    String destinationId="";
 	    long deliveryTime=0;
-	    String state="";
+	    State state= null;
 	    JSONArray jsonArray = (JSONArray) parser.parse(jsonObject.get("Demands").toString());
 	    
 	    for(int i=0;i<jsonArray.size();i++) {
@@ -114,7 +116,7 @@ public class JsonDecryptor {
 			isUrgent=Integer.parseInt(jsonObject3.get("$numberInt").toString());
 		    }
 		    if ( key.equals("request")) {
-			request= job2.get(key).toString();
+			request=  Request.valueOf(job2.get(key).toString());
 		    }
 		    if ( key.equals("origin")) {
 			JSONObject jsonObject3 = (JSONObject) parser.parse(job2.get(key).toString());
@@ -132,7 +134,7 @@ public class JsonDecryptor {
 			deliveryTime = Long.parseLong(job3.get("$numberLong").toString());
 		    }
 		    if ( key.equals("state")) {
-			state= job2.get(key).toString();
+			state= State.valueOf(job2.get(key).toString());
 		    }
 		}
 		Demand d = new Demand(id, isUrgent, request, originId, destinationId, deliveryTime, state);
