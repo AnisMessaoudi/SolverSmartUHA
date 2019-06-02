@@ -107,8 +107,8 @@ public class JsonDecryptor {
     public static void main(String[] args) {
 	JsonDecryptor decryptor = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
 	
-	decryptor.readVehcileFile();
-	//decryptor.readDemandFile();
+	//decryptor.readVehcileFile();
+	decryptor.readDemandFile();
 	    
 
 	   
