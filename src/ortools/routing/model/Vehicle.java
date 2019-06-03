@@ -24,6 +24,10 @@ public class Vehicle {
 	    return "Vehicle [id=" + id + ", name=" + name + ", energy=" + energy + ", destinationId=" + destinationId
 		    + ", mailboxes=" + mailboxes + "]";
 	}
+
+	public String getDestinationId() {
+	    return destinationId;
+	}
 	
 	
 

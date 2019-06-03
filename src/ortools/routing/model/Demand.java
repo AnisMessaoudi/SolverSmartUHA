@@ -45,6 +45,14 @@ public class Demand {
 	return "Demand [id=" + id + ", isUrgent=" + isUrgent + ", request=" + request + ", originId=" + originId
 		+ ", destinationId=" + destinationId + ", deliveryTime=" + deliveryTime + ", state=" + state + "]";
     }
+
+    public String getOriginId() {
+        return originId;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
+    }
     
     
 

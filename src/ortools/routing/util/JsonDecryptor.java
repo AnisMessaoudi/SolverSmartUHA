@@ -22,9 +22,6 @@ public class JsonDecryptor {
     private String vehicleFile;
     private String demandFile;
     
-    private List<Vehicle> vehicles = new ArrayList<>();
-    private List<Demand> demands = new ArrayList<>();
-    
     public JsonDecryptor(String vehicleFile, String demandFile) {
 	super();
 	this.vehicleFile = vehicleFile;
@@ -32,10 +29,11 @@ public class JsonDecryptor {
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void readVehcileFile() {
+    public List<Vehicle> readVehcileFile() {
+	List<Vehicle> vehicles = new ArrayList<>();
 	JSONParser parser = new JSONParser();
 	try {
-	    Object obj = parser.parse(new FileReader("jsonFiles/vehicles.json"));
+	    Object obj = parser.parse(new FileReader(vehicleFile));
 	    JSONObject jsonObject = (JSONObject) obj;
 	    
 	    Map map;
@@ -64,7 +62,6 @@ public class JsonDecryptor {
 	    
 	    String destinationId="";
 	    JSONObject jsonObject2 = (JSONObject) parser.parse(jsonObject.get("destination").toString());
-	    System.out.println(jsonObject2);
 	    for(Iterator iterator2 = jsonObject2.keySet().iterator(); iterator2.hasNext();) {
 		String key = (String) iterator2.next();
 		if ( key.equals("id")) {
@@ -84,14 +81,16 @@ public class JsonDecryptor {
 	catch(Exception e) {
 	    e.printStackTrace();
 	}
+	return vehicles;
     }
     
     
     @SuppressWarnings("rawtypes")
-    public void readDemandFile() {
+    public List<Demand> readDemandFile() {
 	JSONParser parser = new JSONParser();
+	    List<Demand> demands = new ArrayList<>();
 	try {
-	    Object obj = parser.parse(new FileReader("jsonFiles/demands.json"));
+	    Object obj = parser.parse(new FileReader(demandFile));
 	    JSONObject jsonObject = (JSONObject) obj;
 	    
 	    String id= "";
@@ -138,21 +137,40 @@ public class JsonDecryptor {
 		    }
 		}
 		Demand d = new Demand(id, isUrgent, request, originId, destinationId, deliveryTime, state);
-		System.out.println(d.toString());
+		//System.out.println(d.toString());
 		demands.add(d);	    
 		}
 	}
 	catch(Exception e) {
 	    e.printStackTrace();
 	}
+	return demands;
     }
     
 
     public static void main(String[] args) {
-	JsonDecryptor decryptor = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
+	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
 	
-	//decryptor.readVehcileFile();
-	decryptor.readDemandFile();
+	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
+
+//	System.out.println(dt.getNodeNumber());
+//	System.out.println(dt.getVehicleNumber());
+	int [][] tab1 = dt.getRequests();
+	for (int i = 0; i < 4; i++) {
+	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
+	}
+//	int [] tab = dt.getVehicleEnds();
+//	for (int i = 0; i < 1; i++) {
+//	    System.out.println(tab[i]);
+//	}
+	int [][] tab = dt.getDistMatrix();
+	for (int i = 0; i < 9; i++) {
+	    for (int j = 0; j < 9; j++) {
+		System.out.print(tab[i][j] + "\t|");
+	    }
+	    System.out.println("");
+	}
+	
 	    
 
 	   
