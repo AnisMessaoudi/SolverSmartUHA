@@ -72,7 +72,7 @@ public class DataTransformer {
 	long[] deliveryTimes = new long[getNodeNumber()];
 	int n = this.getVehicleNumber();
 	for(int i=0; i < n; i++) {
-	    deliveryTimes[i] = 0;
+	    deliveryTimes[i] = System.currentTimeMillis();
 	}
 	for(int j=0; j < demands.size(); j++) {
 	    deliveryTimes[2*j + n] = demands.get(j).getDeliveryTime();
