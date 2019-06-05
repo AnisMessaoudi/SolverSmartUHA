@@ -2,11 +2,9 @@ package ortools.routing.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import ortools.routing.model.Demand;
 import ortools.routing.model.Vehicle;
@@ -37,18 +35,19 @@ public class DataTransformer {
 	    nodeTable.put(i+ 2*j, demands.get(j).getOriginId());
 	    nodeTable.put(i+ 2*j+1, demands.get(j).getDestinationId());
 	}
-	
-	Set<Entry<Integer, String>> setHm = nodeTable.entrySet();
-	Iterator<Entry<Integer, String>> it = setHm.iterator();
-	while(it.hasNext()){
-	    Entry<Integer, String> e = it.next();
-	    //System.out.println(e.getKey() + " : " + e.getValue());
-	}
+//	
+//	Set<Entry<Integer, String>> setHm = nodeTable.entrySet();
+//	Iterator<Entry<Integer, String>> it = setHm.iterator();
+//	while(it.hasNext()){
+//	    Entry<Integer, String> e = it.next();
+//	    System.out.println(e.getKey() + " : " + e.getValue());
+//	}
     }
     
     
     public DataModel getData() {
-	return new DataModel(this.getNodeNumber(), this.getDistMatrix(), this.getRequests(),
+	return new DataModel(this.getNodeNumber(), this.getDistMatrix(), this.getTimeMatrix(),
+		this.getRequests(),this.getDeliveryTime(),
 		this.getVehicleNumber(), this.getVehicleStarts(), this.getVehicleEnds());
     }
 
@@ -68,6 +67,21 @@ public class DataTransformer {
 	}
 	return requests;
     }
+    
+    public long [] getDeliveryTime() {
+	long[] deliveryTimes = new long[getNodeNumber()];
+	int n = this.getVehicleNumber();
+	for(int i=0; i < n; i++) {
+	    deliveryTimes[i] = 0;
+	}
+	for(int j=0; j < demands.size(); j++) {
+	    deliveryTimes[2*j + n] = demands.get(j).getDeliveryTime();
+	    deliveryTimes[2*j + n + 1] = 0;
+	}
+	
+	return deliveryTimes;
+    }
+
     
     public int[] getVehicleStarts() {
 	int [] vehicleStarts = new int[vehicles.size()];
@@ -109,5 +123,31 @@ public class DataTransformer {
 	}
 	return distMatrix;
     }
+    
+    public long[][] getTimeMatrix(){
+	long[][] timeMatrix = new long[getNodeNumber()][getNodeNumber()];
+	for (int i = 0; i < getNodeNumber()-1; i++) {
+	    String iId = nodeTable.get(i);
+	    int iIdx = -1;
+	    for (Entry<Integer, String> entry : Utils.globalNodeTable.entrySet()) {
+		if (entry.getValue().equals(iId)) { 
+		    iIdx = entry.getKey();
+		    break;
+		}
+	    }
+	    for (int j = 0; j < getNodeNumber()-1; j++) {
+		String jId= nodeTable.get(j);
+		for (Entry<Integer, String> entry1 : Utils.globalNodeTable.entrySet()) {
+		    if (entry1.getValue().equals(jId)) {
+			//System.out.println("(" +i+","+j+")  " +iIdx + " : " + entry1.getKey());
+			timeMatrix[i][j] = Utils.globalTimeMatrix[iIdx][entry1.getKey()];
+			break;
+		    }
+		}
+	    }
+	}
+	return timeMatrix;
+    }
+    
 
 }

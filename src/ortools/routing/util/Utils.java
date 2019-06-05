@@ -19,11 +19,11 @@ public class Utils {
 	    {0, 0, 0, 0},
 	    {0, 0, 0, 0},
     };
-    public static double [][] globalTimeMatrix= {
-	    {0, 57.55, 103.26, 94.96},
-	    {57.55, 0, 47.84, 41.72},
-	    {103.26, 47.84, 0, 11.87},
-	    {94.96, 41.72, 11.87, 0},
+    public static long [][] globalTimeMatrix= {
+	    {0, 57, 103, 95},
+	    {57, 0, 48, 42},
+	    {103, 48, 0, 12},
+	    {95, 42, 12, 0},
     };
     
     public static Map<Integer, String> globalNodeTable = new HashMap<>();

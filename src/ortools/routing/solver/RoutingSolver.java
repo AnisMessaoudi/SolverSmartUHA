@@ -60,7 +60,7 @@ public class RoutingSolver {
 //	model.addDimensionWithVehicleCapacity(demandCallbackIndex, 0, // null capacity slack
 //		data.vehicleCapacities, // vehicle maximum capacities
 //		true, // start cumul to zero
-//		"Capacity");
+//		"Capacity"); 
 
 	// Define Transportation Requests.
 	Solver solver = model.solver();

@@ -2,6 +2,7 @@ package ortools.routing.util;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -192,11 +193,27 @@ public class JsonDecryptor {
 	    }
 	    System.out.println("");
 	}
+	System.out.println("");
+	for (int i = 0; i < 10; i++) {
+	    for (int j = 0; j < 10; j++) {
+		System.out.print(data.timeMatrix[i][j] + "\t|");
+	    }
+	    System.out.println("");
+	}
+	
+	for (int j = 0; j < 10; j++) {
+	    System.out.println(data.deliveryTimes[j]);
+	}
+	
+	
 	
 	RoutingSolver rs = new RoutingSolver(data);
 	
 	rs.solve();
 	rs.printSolution();
+	
+	Date d = new Date(1559329320285L);
+	System.out.println(d.toString() + " "+ d.getTime());
 
 
 	

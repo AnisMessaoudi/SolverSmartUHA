@@ -54,6 +54,10 @@ public class Demand {
         return destinationId;
     }
     
+    public long getDeliveryTime() {
+	return deliveryTime;
+    }
+    
     
 
 }
