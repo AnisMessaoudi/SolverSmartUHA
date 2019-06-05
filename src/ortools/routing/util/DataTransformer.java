@@ -10,6 +10,7 @@ import java.util.Set;
 
 import ortools.routing.model.Demand;
 import ortools.routing.model.Vehicle;
+import ortools.routing.solver.DataModel;
 
 public class DataTransformer {
     
@@ -23,7 +24,6 @@ public class DataTransformer {
 	super();
 	this.vehicles = vehicles;
 	this.demands = demands;
-	
 	initMap();
     }
     
@@ -42,10 +42,15 @@ public class DataTransformer {
 	Iterator<Entry<Integer, String>> it = setHm.iterator();
 	while(it.hasNext()){
 	    Entry<Integer, String> e = it.next();
-	    System.out.println(e.getKey() + " : " + e.getValue());
+	    //System.out.println(e.getKey() + " : " + e.getValue());
 	}
     }
-
+    
+    
+    public DataModel getData() {
+	return new DataModel(this.getNodeNumber(), this.getDistMatrix(), this.getRequests(),
+		this.getVehicleNumber(), this.getVehicleStarts(), this.getVehicleEnds());
+    }
 
     public int getVehicleNumber() {
 	return vehicles.size();
@@ -80,8 +85,8 @@ public class DataTransformer {
 	return vehicleEnds;
     }
     
-    public int[][] getDistMatrix(){
-	int[][] distMatrix = new int[getNodeNumber()][getNodeNumber()];
+    public long[][] getDistMatrix(){
+	long[][] distMatrix = new long[getNodeNumber()][getNodeNumber()];
 	for (int i = 0; i < getNodeNumber()-1; i++) {
 	    String iId = nodeTable.get(i);
 	    int iIdx = -1;

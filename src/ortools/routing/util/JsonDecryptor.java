@@ -15,6 +15,8 @@ import ortools.routing.model.Demand.Request;
 import ortools.routing.model.Demand.State;
 import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
+import ortools.routing.solver.DataModel;
+import ortools.routing.solver.RoutingSolver;
 
 
 public class JsonDecryptor {
@@ -148,28 +150,57 @@ public class JsonDecryptor {
     }
     
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
 	
 	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
+	
 
+	
 //	System.out.println(dt.getNodeNumber());
 //	System.out.println(dt.getVehicleNumber());
-	int [][] tab1 = dt.getRequests();
-	for (int i = 0; i < 4; i++) {
-	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
-	}
-//	int [] tab = dt.getVehicleEnds();
-//	for (int i = 0; i < 1; i++) {
-//	    System.out.println(tab[i]);
+//	int [][] tab1 = dt.getRequests();
+//	for (int i = 0; i < 4; i++) {
+//	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
 //	}
-	int [][] tab = dt.getDistMatrix();
-	for (int i = 0; i < 9; i++) {
-	    for (int j = 0; j < 9; j++) {
-		System.out.print(tab[i][j] + "\t|");
+//	int [] tab11 = dt.getVehicleEnds();
+//	for (int i = 0; i < 1; i++) {
+//	    System.out.println(tab11[i]);
+//	}
+//	long[][] tab2 = dt.getDistMatrix();
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(tab2[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
+	
+	DataModel data = dt.getData(); 
+	
+	System.out.println(data.nodeNumber);
+	System.out.println(data.vehicleNumber);
+	for (int i = 0; i < 4; i++) {
+	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
+	}
+	for (int i = 0; i < 1; i++) {
+	    System.out.println(data.vehicleStarts[0]);
+	    System.out.println(data.vehicleEnds[0]);
+	}
+	for (int i = 0; i < 10; i++) {
+	    for (int j = 0; j < 10; j++) {
+		System.out.print(data.distanceMatrix[i][j] + "\t|");
 	    }
 	    System.out.println("");
 	}
+	
+	RoutingSolver rs = new RoutingSolver(data);
+	
+	rs.solve();
+	rs.printSolution();
+
+
+	
+
 	
 	    
 

@@ -13,19 +13,19 @@ public class RoutingSolver {
     
     static {System.loadLibrary("jniortools");}
     
-    private final Data data;
+    private final DataModel data;
     private RoutingIndexManager manager;
     private RoutingModel model;
     private Assignment solution;
     
-    public RoutingSolver(Data data) {
+    public RoutingSolver(DataModel data) {
 	this.data = data;
     }
     
     
     public void solve() throws Exception {
 	// Create Routing Index Manager
-	manager = new RoutingIndexManager(data.distanceMatrix.length, data.vehicleNumber, data.depot, data.arr);
+	manager = new RoutingIndexManager(data.distanceMatrix.length, data.vehicleNumber, data.vehicleStarts, data.vehicleEnds);
 
 	// Create Routing Model.
 	model = new RoutingModel(manager);
@@ -39,7 +39,6 @@ public class RoutingSolver {
 		    return data.distanceMatrix[fromNode][toNode];
 		});
 	
-
 	// Define cost of each arc.
 	model.setArcCostEvaluatorOfAllVehicles(transitCallbackIndex);
 	
@@ -53,19 +52,19 @@ public class RoutingSolver {
 	distanceDimension.setGlobalSpanCostCoefficient(100);
 	
 	// Add Capacity constraint.
-	final int demandCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
-	    // Convert from routing variable Index to user NodeIndex.
-	    int fromNode = manager.indexToNode(fromIndex);
-	    return data.demands[fromNode];
-	});
-	model.addDimensionWithVehicleCapacity(demandCallbackIndex, 0, // null capacity slack
-		data.vehicleCapacities, // vehicle maximum capacities
-		true, // start cumul to zero
-		"Capacity");
+//	final int demandCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
+//	    // Convert from routing variable Index to user NodeIndex.
+//	    int fromNode = manager.indexToNode(fromIndex);
+//	    return data.demands[fromNode];
+//	});
+//	model.addDimensionWithVehicleCapacity(demandCallbackIndex, 0, // null capacity slack
+//		data.vehicleCapacities, // vehicle maximum capacities
+//		true, // start cumul to zero
+//		"Capacity");
 
 	// Define Transportation Requests.
 	Solver solver = model.solver();
-	for (int[] request : data.pickupsDeliveries) {
+	for (int[] request : data.requests) {
 	    long pickupIndex = manager.nodeToIndex(request[0]);
 	    long deliveryIndex = manager.nodeToIndex(request[1]);
 	    model.addPickupAndDelivery(pickupIndex, deliveryIndex);
@@ -79,7 +78,7 @@ public class RoutingSolver {
 	RoutingSearchParameters searchParameters =
 		main.defaultRoutingSearchParameters()
 		.toBuilder()
-		.setFirstSolutionStrategy(FirstSolutionStrategy.Value.PARALLEL_CHEAPEST_INSERTION)
+		.setFirstSolutionStrategy(FirstSolutionStrategy.Value.PATH_CHEAPEST_ARC)
 		.build();
 
 	// Solve the problem.
@@ -88,18 +87,18 @@ public class RoutingSolver {
     }
     
     
-    private void printSolution() {
+    public void printSolution() {
 	long totalDistance = 0;
 	for (int i = 0; i < data.vehicleNumber; ++i) {
 	    long index = model.start(i);
 	    System.out.println("Route for Vehicle " + i + ":");
 	    long routeDistance = 0;
-	    long routeLoad = 0;
+//	    long routeLoad = 0;
 	    String route = "";
 	    while (!model.isEnd(index)) {
 		long nodeIndex = manager.indexToNode(index);
-		routeLoad += data.demands[(int) nodeIndex];
-		route += nodeIndex + " Load(" + routeLoad + ") -> ";
+//		routeLoad += data.demands[(int) nodeIndex];
+		route += nodeIndex/* + " Load(" + routeLoad + ")*/+" -> ";
 		long previousIndex = index;
 		index = solution.value(model.nextVar(index));
 		routeDistance += model.getArcCostForVehicle(previousIndex, index, i);
@@ -111,12 +110,12 @@ public class RoutingSolver {
 	System.out.println("Total Distance of all routes: " + totalDistance + "m");
     }
     
-    public static void main(String[] args) throws Exception {
-	Data data = new Data();
-	RoutingSolver rs = new RoutingSolver(data);
-	
-	rs.solve();
-	rs.printSolution();
-    }
+//    public static void main(String[] args) throws Exception {
+//	Data data = new Data();
+//	RoutingSolver rs = new RoutingSolver(data);
+//	
+//	rs.solve();
+//	rs.printSolution();
+//    }
 
 }

@@ -7,13 +7,13 @@ import java.util.Map.Entry;
 
 public class Utils {
 
-    public static int [][] globalDistanceMatrix = {
+    public static long [][] globalDistanceMatrix = {
 	    {0, 160, 287, 264},
 	    {160, 0, 133, 116},
 	    {287, 133, 0, 33},
 	    {264, 116, 33, 0},
     };
-    public static int [][] globalEnergyMatrix= {
+    public static long [][] globalEnergyMatrix= {
 	    {0, 0, 0, 0},
 	    {0, 0, 0, 0},
 	    {0, 0, 0, 0},
