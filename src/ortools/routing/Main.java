@@ -11,8 +11,9 @@ public class Main {
 	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
 	
 	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
+	DataModel data = new DataModel();
 	
-	DataModel data = dt.getData(); 
+	dt.getData(data); 
 	
 	Solver2 rs = new Solver2(data);
 	

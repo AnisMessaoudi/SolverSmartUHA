@@ -14,6 +14,16 @@ public class Mailbox {
     public String toString() {
 	return "Mailbox [name=" + name + ", isEmpty=" + isEmpty + "]";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+    
+    
     
 
 }

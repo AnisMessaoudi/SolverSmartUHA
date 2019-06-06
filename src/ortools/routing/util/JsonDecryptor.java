@@ -163,7 +163,8 @@ public class JsonDecryptor {
 //	for (int i = 0; i < 4; i++) {
 //	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
 //	}
-//	int [] tab11 = dt.getVehicleEnds();
+//	int tab11[]; int tab12[] = null;
+//	dt.getVehicleStartsAndEnds(tab11,tab12);
 //	for (int i = 0; i < 1; i++) {
 //	    System.out.println(tab11[i]);
 //	}
@@ -175,17 +176,18 @@ public class JsonDecryptor {
 //	    System.out.println("");
 //	}
 	
-	DataModel data = dt.getData(); 
+	DataModel data = new DataModel();
+	dt.getData(data);
 	
 	System.out.println(data.nodeNumber);
 	System.out.println(data.vehicleNumber);
 	for (int i = 0; i < 4; i++) {
 	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
 	}
-	for (int i = 0; i < 1; i++) {
-	    System.out.println(data.vehicleStarts[0]);
-	    System.out.println(data.vehicleEnds[0]);
-	}
+
+	System.out.println(data.vehicleStarts[0]);
+	System.out.println(data.vehicleEnds[0]);
+	
 	for (int i = 0; i < 10; i++) {
 	    for (int j = 0; j < 10; j++) {
 		System.out.print(data.distanceMatrix[i][j] + "\t|");

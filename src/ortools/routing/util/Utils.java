@@ -3,6 +3,7 @@ package ortools.routing.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 
 public class Utils {
@@ -48,5 +49,28 @@ public class Utils {
 	    return globalNodeTable.get(index);
 	}
 	return null;
+    }
+    
+    public static String durationTime(long milliseconds) {
+	long uptime = milliseconds;
+	long days = TimeUnit.MILLISECONDS.toDays(uptime);
+	uptime -= TimeUnit.DAYS.toMillis(days);
+
+	long hours = TimeUnit.MILLISECONDS.toHours(uptime);
+	uptime -= TimeUnit.HOURS.toMillis(hours);
+
+	long minutes = TimeUnit.MILLISECONDS.toMinutes(uptime);
+	uptime -= TimeUnit.MINUTES.toMillis(minutes);
+
+	long seconds = TimeUnit.MILLISECONDS.toSeconds(uptime);
+
+	StringBuilder sb = new StringBuilder();
+	sb.append(days);
+	sb.append("d ");
+	sb.append(minutes);
+	sb.append("min ");
+	sb.append(seconds);
+	sb.append("sec ");
+	return sb.toString();
     }
 }

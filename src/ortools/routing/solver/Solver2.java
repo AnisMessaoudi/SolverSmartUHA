@@ -1,5 +1,7 @@
 package ortools.routing.solver;
 
+import java.util.Date;
+
 import com.google.ortools.constraintsolver.Assignment;
 import com.google.ortools.constraintsolver.FirstSolutionStrategy;
 import com.google.ortools.constraintsolver.IntVar;
@@ -12,6 +14,7 @@ import com.google.ortools.constraintsolver.main;
 
 import ortools.routing.util.DataTransformer;
 import ortools.routing.util.JsonDecryptor;
+import ortools.routing.util.Utils;
 
 public class Solver2 {
 
@@ -78,19 +81,21 @@ static {System.loadLibrary("jniortools");}
 		});
 	
 	//Create time dimension
-	model.addDimension(timeCallbackIndex, 
-		Long.MAX_VALUE,
-		Long.MAX_VALUE,
-		false,
-		"Time");
+	model.addDimension(timeCallbackIndex, Long.MAX_VALUE, Long.MAX_VALUE, false, "Time");
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
 	
 	// Add time window constraints for each pickup location.
-	for (int i = 1; i < data.deliveryTimes.length; ++i) {
+	for (int i = 0; i < data.vehicleNumber; ++i) {
+	    long index = model.start(i);
+	    timeDimension.cumulVar(index).setValue(data.deliveryTimes[i]);
+	}
+	for (int i = data.vehicleNumber; i < data.deliveryTimes.length; ++i) {
 	    long index = manager.nodeToIndex(i);
 	    if (data.deliveryTimes[i] != 0)
 		timeDimension.cumulVar(index).setValue(data.deliveryTimes[i]);
 	}
+	
+
 
 	
 	// Setting first solution heuristic.
@@ -117,7 +122,8 @@ static {System.loadLibrary("jniortools");}
 	    while (!model.isEnd(index)) {
 		long nodeIndex = manager.indexToNode(index);
 		IntVar timeVar = timeDimension.cumulVar(index);
-		route += nodeIndex +" Time(" + solution.value(timeVar) + ") -> ";
+		Date date = new Date(solution.value(timeVar));
+		route += nodeIndex +" Time(" + date + ") -> ";
 		long previousIndex = index;
 		index = solution.value(model.nextVar(index));
 		routeDistance += model.getArcCostForVehicle(previousIndex, index, i);
@@ -128,7 +134,7 @@ static {System.loadLibrary("jniortools");}
 	    totalDistance += routeDistance;
 	}
 	System.out.println("Total Distance of all routes: " + totalDistance + "m");
-	System.out.println("Total time of all routes: " + totalTime + "s");
+	System.out.println("Total time of all routes: " + (Utils.durationTime(totalTime - data.deliveryTimes[0])));
     }
     
     public static void main(String[] args) throws Exception {
@@ -136,7 +142,8 @@ static {System.loadLibrary("jniortools");}
 	
 	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
 	
-	DataModel data = dt.getData(); 
+	DataModel data = new DataModel();
+	dt.getData(data);
 	
 	Solver2 rs = new Solver2(data);
 	
