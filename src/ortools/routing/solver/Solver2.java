@@ -71,6 +71,7 @@ static {System.loadLibrary("jniortools");}
 		    distanceDimension.cumulVar(pickupIndex), distanceDimension.cumulVar(deliveryIndex)));
 	}
 	
+	
 	// Create and register a time callback.
 	final int timeCallbackIndex =
 		model.registerTransitCallback((long fromIndex, long toIndex) -> {
@@ -79,11 +80,9 @@ static {System.loadLibrary("jniortools");}
 		    int toNode = manager.indexToNode(toIndex);
 		    return data.timeMatrix[fromNode][toNode];
 		});
-	
 	//Create time dimension
 	model.addDimension(timeCallbackIndex, Long.MAX_VALUE, Long.MAX_VALUE, false, "Time");
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
-	
 	// Add time window constraints for each pickup location.
 	for (int i = 0; i < data.vehicleNumber; ++i) {
 	    long index = model.start(i);
@@ -95,7 +94,39 @@ static {System.loadLibrary("jniortools");}
 		timeDimension.cumulVar(index).setValue(data.deliveryTimes[i]);
 	}
 	
-
+	// Add Capacities constraint.
+	// for small letters
+	final int smallLetterCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
+	    // Convert from routing variable Index to user NodeIndex.
+	    int fromNode = manager.indexToNode(fromIndex);
+	    return data.smallLetterDemands[fromNode];
+	});
+	model.addDimensionWithVehicleCapacity(smallLetterCallbackIndex, 0, // null capacity slack
+		data.vehicleSmallLetterCapacity, // vehicle maximum capacities
+		true, // start cumul to zero
+		"smallLetterCapacity");
+	//for large letter
+	final int largeLetterCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
+	    // Convert from routing variable Index to user NodeIndex.
+	    int fromNode = manager.indexToNode(fromIndex);
+	    return data.largeLetterDemands[fromNode];
+	});
+	model.addDimensionWithVehicleCapacity(largeLetterCallbackIndex, 0, // null capacity slack
+		data.vehicleLargeLetterCapacity, // vehicle maximum capacities
+		true, // start cumul to zero
+		"largeLetterCapacity");
+	//for cargo
+	final int cargoCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
+	    // Convert from routing variable Index to user NodeIndex.
+	    int fromNode = manager.indexToNode(fromIndex);
+	    return data.cargoDemands[fromNode];
+	});
+	model.addDimensionWithVehicleCapacity(cargoCallbackIndex, 0, // null capacity slack
+		data.vehicleCargoCapacity, // vehicle maximum capacities
+		true, // start cumul to zero
+		"cargoCapacity");
+	
+	//Add energy constraint
 
 	
 	// Setting first solution heuristic.
@@ -114,27 +145,40 @@ static {System.loadLibrary("jniortools");}
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
 	long totalDistance = 0;
 	long totalTime = 0;
+	StringBuilder sb = new StringBuilder();
 	for (int i = 0; i < data.vehicleNumber; ++i) {
 	    long index = model.start(i);
-	    System.out.println("Route for Vehicle " + i + ":");
 	    long routeDistance = 0;
-	    String route = "";
+	    long smallLoad  = 0;
+	    long largeLoad = 0;
+	    long cargoLoad = 0;
+	    sb.append("Route for Vehicle " + i + ":\n");
 	    while (!model.isEnd(index)) {
 		long nodeIndex = manager.indexToNode(index);
 		IntVar timeVar = timeDimension.cumulVar(index);
 		Date date = new Date(solution.value(timeVar));
-		route += nodeIndex +" Time(" + date + ") -> ";
+		smallLoad+= data.smallLetterDemands[(int) nodeIndex];
+		largeLoad+= data.largeLetterDemands[(int) nodeIndex];
+		cargoLoad+= data.cargoDemands[(int) nodeIndex];
+		sb.append(nodeIndex);
+		sb.append(" : date(" + date + "),");
+		sb.append(" \n\t smallCapacite(" + smallLoad + "/" + data.vehicleSmallLetterCapacity[i] + "),");
+		sb.append(" \n\t largeCapacite(" + largeLoad + "/" + data.vehicleLargeLetterCapacity[i] + "),");
+		sb.append(" \n\t cargoCapacite(" + cargoLoad + "/" + data.vehicleCargoCapacity[i] + ")");
+		
+		//route += nodeIndex +" Time(" + date + ") -> ";
+		sb.append("  ->\n");
 		long previousIndex = index;
 		index = solution.value(model.nextVar(index));
 		routeDistance += model.getArcCostForVehicle(previousIndex, index, i);
 		totalTime += solution.min(timeVar);
 	    }
-	    System.out.println(route + manager.indexToNode(index));
-	    System.out.println("Distance of the route: " + routeDistance + "m\n");
+	    sb.append("\nDistance of the route: " + routeDistance + "m\n");
 	    totalDistance += routeDistance;
 	}
-	System.out.println("Total Distance of all routes: " + totalDistance + "m");
-	System.out.println("Total time of all routes: " + (Utils.durationTime(totalTime - data.deliveryTimes[0])));
+	//sb.append("Total time of all routes: " + (Utils.durationTime(data.deliveryTimes[4] - data.deliveryTimes[0])));
+	
+	System.out.println(sb.toString());
     }
     
     public static void main(String[] args) throws Exception {

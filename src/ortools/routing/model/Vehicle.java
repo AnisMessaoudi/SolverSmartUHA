@@ -28,6 +28,12 @@ public class Vehicle {
 	public String getDestinationId() {
 	    return destinationId;
 	}
+
+	public List<Mailbox> getMailboxes() {
+	    return mailboxes;
+	}
+	
+	
 	
 	
 

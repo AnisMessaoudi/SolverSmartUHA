@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ortools.routing.model.Demand;
+import ortools.routing.model.Demand.Request;
+import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
 import ortools.routing.solver.DataModel;
 
@@ -49,8 +51,14 @@ public class DataTransformer {
 	data.distanceMatrix = new long[this.getNodeNumber()][this.getNodeNumber()];
 	data.timeMatrix = new long[this.getNodeNumber()][this.getNodeNumber()];
 	data.energyMatrix = new long[this.getNodeNumber()][this.getNodeNumber()]; 
-	data.vehicleStarts = new int[this.vehicles.size()];
+	data.vehicleStarts = new int[this.getVehicleNumber()];
 	data.vehicleEnds = new int[this.getVehicleNumber()];
+	data.vehicleSmallLetterCapacity = new long[this.getVehicleNumber()];
+	data.vehicleLargeLetterCapacity = new long[this.getVehicleNumber()];
+	data.vehicleCargoCapacity = new long[this.getVehicleNumber()];
+	data.smallLetterDemands = new long[this.getNodeNumber()];
+	data.largeLetterDemands = new long[this.getNodeNumber()];
+	data.cargoDemands = new long[this.getNodeNumber()];
 	
 	data.nodeNumber = this.getNodeNumber();
 	this.getMatrices(data.distanceMatrix, data.timeMatrix, data.energyMatrix);
@@ -58,6 +66,12 @@ public class DataTransformer {
 	data.deliveryTimes = this.getDeliveryTime();
 	data.vehicleNumber = this.getVehicleNumber();
 	this.getVehicleStartsAndEnds(data.vehicleStarts, data.vehicleEnds);
+	this.getVehicleCapacities(data.vehicleSmallLetterCapacity,
+		data.vehicleLargeLetterCapacity,
+		data.vehicleCargoCapacity);
+	this.getDemands(data.smallLetterDemands,
+		data.largeLetterDemands,
+		data.cargoDemands);
     }
 
     public int getVehicleNumber() {
@@ -93,7 +107,6 @@ public class DataTransformer {
     
     public void getVehicleStartsAndEnds(int[] vehicleStarts, int[] vehicleEnds) {
 	for (int i = 0; i < vehicles.size(); i++) {
-	    System.out.println("coucou" + i);
 	    vehicleStarts[i] = i;
 	    vehicleEnds[i] = this.getNodeNumber() - 1;
 	}
@@ -123,6 +136,51 @@ public class DataTransformer {
 	}
     }
     
+    public void getVehicleCapacities(long[] smallLetterCap, long[] largeLetterCap, long[] cargoCap) {
+	for (int i = 0; i < this.getVehicleNumber(); i++) {
+	    Vehicle v = vehicles.get(i);
+	    for (Mailbox m : v.getMailboxes()) {
+		String name = m.getName();
+		if (name.equals("smallBox"))
+		    smallLetterCap[i] += 1;
+		if (name.equals("largeBox"))
+		    largeLetterCap[i] += 1;
+		if (name.equals("cargo"))
+		    cargoCap[i] += 6;
+	    }
+	}
+    }
+    
+    public void getDemands(long[] smallLetterDemands, long[] largeLetterDemands, long[] cargoDemands) {
+	int n = this.getVehicleNumber();
+	for (int i = 0; i < demands.size(); i++) {
+	    Demand d = demands.get(i);
+	    switch(d.getRequest()) {
+	    	case smallLetter : 
+	    	    smallLetterDemands[2*i + n] = 1;
+	    	    smallLetterDemands[2*i + n + 1] = -1;
+	    	    break;
+	    	case largeLetter : 
+	    	    largeLetterDemands[2*i + n] = 1;
+	    	    largeLetterDemands[2*i + n + 1] = -1;
+	    	    break;  
+	    	case cargo1 :
+	    	    cargoDemands[2*i + n] = 1;
+	    	    cargoDemands[2*i + n + 1] = -1;
+	    	    break;
+	    	case cargo3 :
+	    	    cargoDemands[2*i + n] = 3;
+	    	    cargoDemands[2*i + n + 1] = -3;
+	    	    break;
+	    	case cargo6 :
+	    	    cargoDemands[2*i + n] = 6;
+	    	    cargoDemands[2*i + n + 1] = -6;
+	    	    break;
+	    	default :
+		    break;
+	    }
+	}
+    }
     
 
 }

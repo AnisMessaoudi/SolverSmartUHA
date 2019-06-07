@@ -206,6 +206,16 @@ public class JsonDecryptor {
 	    System.out.println(data.deliveryTimes[j]);
 	}
 	
+	System.out.println(data.vehicleSmallLetterCapacity[0]);
+	System.out.println(data.vehicleLargeLetterCapacity[0]);
+	System.out.println(data.vehicleCargoCapacity[0]);
+	
+	for (int j = 0; j < 10; j++) {
+	    System.out.print(data.smallLetterDemands[j] + " | ");
+	    System.out.print(data.largeLetterDemands[j] + " | ");
+	    System.out.println(data.cargoDemands[j]);
+	}
+	
 	RoutingSolver rs = new RoutingSolver(data);
 	
 	rs.solve();
