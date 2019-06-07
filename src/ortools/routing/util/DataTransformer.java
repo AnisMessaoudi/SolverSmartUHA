@@ -17,6 +17,7 @@ public class DataTransformer {
     private List<Vehicle> vehicles = new ArrayList<>();
     private List<Demand> demands = new ArrayList<>();
     
+    //map entre l'index et l'id d'un point 
     private Map<Integer, String> nodeTable = new HashMap<>();
 
 
@@ -28,24 +29,29 @@ public class DataTransformer {
     }
     
     private void initMap() {
-	int i = 0, j=0;
+	int i=0;
 	for(; i < vehicles.size(); i++) {
 	    nodeTable.put(i, vehicles.get(i).getDestinationId());
 	}
-	for (; j < demands.size(); j++) {
+	for (int j=0; j < demands.size(); j++) {
 	    nodeTable.put(i+ 2*j, demands.get(j).getOriginId());
 	    nodeTable.put(i+ 2*j+1, demands.get(j).getDestinationId());
 	}
-//	
-//	Set<Entry<Integer, String>> setHm = nodeTable.entrySet();
-//	Iterator<Entry<Integer, String>> it = setHm.iterator();
-//	while(it.hasNext()){
-//	    Entry<Integer, String> e = it.next();
-//	    System.out.println(e.getKey() + " : " + e.getValue());
-//	}
     }
     
     
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public List<Demand> getDemands() {
+        return demands;
+    }
+    
+    public Map<Integer, String> getNodeTable() {
+        return nodeTable;
+    }
+
     public void getData(DataModel data) {
 	//initialize arrays
 	data.distanceMatrix = new long[this.getNodeNumber()][this.getNodeNumber()];

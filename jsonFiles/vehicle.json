@@ -1,0 +1,108 @@
+{
+	"_id": {
+		"$oid": "5cec46211b8c6c3f78240774"
+	},
+	"name": "Alpha",
+	"energy": {
+		"$numberInt": "4324"
+	},
+	"humidity": {
+		"$numberInt": "33"
+	},
+	"temperature": {
+		"$numberInt": "21"
+	},
+	"lastPosition": "BU",
+	"planning": [],
+	"mailBoxes": [
+		{
+			"arrayDemandId": [],
+			"name": "smallLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "1"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "smallLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "2"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "smallLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "3"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "smallLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "4"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "largeLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "5"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "largeLetter",
+			"isEmpty": {
+				"$numberInt": "1"
+			},
+			"_id": {
+				"$numberInt": "6"
+			},
+			"demandId": ""
+		},
+		{
+			"arrayDemandId": [],
+			"name": "cargo",
+			"isEmpty": {
+				"$numberInt": "6"
+			},
+			"_id": {
+				"$numberInt": "7"
+			}
+		}
+	],
+	"__v": {
+		"$numberInt": "1"
+	},
+	"created_at": {
+		"$date": {
+			"$numberLong": "1559657781294"
+		}
+	},
+	"updatedAt": {
+		"$date": {
+			"$numberLong": "1559724874904"
+		}
+	}
+}

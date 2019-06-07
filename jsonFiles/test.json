@@ -1,0 +1,1 @@
+{"_id":{"$oid":"...."},"vehicle":[{"destination":[{"demanId":{"$oid":"5cf14f9b782a013484084470"},"destinationId":{"$oid":"5ce80b22293b8439240d18d4"}}],"vehicleId":{"$oid":"5cec46211b8c6c3f78240774"}}]}

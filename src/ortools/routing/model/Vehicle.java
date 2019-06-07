@@ -25,6 +25,10 @@ public class Vehicle {
 		    + ", mailboxes=" + mailboxes + "]";
 	}
 
+	public String getId() {
+	    return id;
+	}
+
 	public String getDestinationId() {
 	    return destinationId;
 	}

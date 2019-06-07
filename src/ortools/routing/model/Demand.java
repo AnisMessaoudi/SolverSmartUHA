@@ -46,6 +46,10 @@ public class Demand {
 		+ ", destinationId=" + destinationId + ", deliveryTime=" + deliveryTime + ", state=" + state + "]";
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getOriginId() {
         return originId;
     }

@@ -17,6 +17,7 @@ import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
 import ortools.routing.solver.DataModel;
 import ortools.routing.solver.RoutingSolver;
+import ortools.routing.solver.Solver2;
 
 
 public class JsonDecryptor {
@@ -216,10 +217,15 @@ public class JsonDecryptor {
 	    System.out.println(data.cargoDemands[j]);
 	}
 	
-	RoutingSolver rs = new RoutingSolver(data);
 	
+	Solver2 rs = new Solver2(data);
+
 	rs.solve();
 	rs.printSolution();
+	
+	
+	JsonEncryptor enc = new JsonEncryptor(dt, rs.getSolution());
+	enc.writePlaning();
 
 	   	    
     }

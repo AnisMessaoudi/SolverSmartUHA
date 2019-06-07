@@ -141,6 +141,23 @@ static {System.loadLibrary("jniortools");}
 	
     }
     
+    public long[][] getSolution() {
+	long[][] sol = new long[data.vehicleNumber][data.nodeNumber - 1];
+	for (int i = 0; i < data.vehicleNumber; i++) {
+	    long index = model.start(i);
+	    int j=0;
+	    while (!model.isEnd(index)) {
+		long nodeIndex = manager.indexToNode(index);
+		sol[i][j]= nodeIndex;
+		index = solution.value(model.nextVar(index));
+		j++;
+	    }
+	   
+	}
+	return sol;
+	
+    }
+    
     public void printSolution() {
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
 	long totalDistance = 0;
