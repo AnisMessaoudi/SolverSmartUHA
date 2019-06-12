@@ -14,7 +14,6 @@ import com.google.ortools.constraintsolver.main;
 
 import ortools.routing.util.DataTransformer;
 import ortools.routing.util.JsonDecryptor;
-import ortools.routing.util.Utils;
 
 public class Solver2 {
 
@@ -33,7 +32,8 @@ static {System.loadLibrary("jniortools");}
     public void solve() throws Exception {
 	
 	// Create Routing Index Manager
-	manager = new RoutingIndexManager(data.distanceMatrix.length, data.vehicleNumber, data.vehicleStarts, data.vehicleEnds);
+	manager = new RoutingIndexManager(data.distanceMatrix.length, data.vehicleNumber,
+		data.vehicleStarts, data.vehicleEnds);
 
 	// Create Routing Model.
 	model = new RoutingModel(manager);
@@ -97,7 +97,6 @@ static {System.loadLibrary("jniortools");}
 	// Add Capacities constraint.
 	// for small letters
 	final int smallLetterCallbackIndex = model.registerUnaryTransitCallback((long fromIndex) -> {
-	    // Convert from routing variable Index to user NodeIndex.
 	    int fromNode = manager.indexToNode(fromIndex);
 	    return data.smallLetterDemands[fromNode];
 	});
@@ -138,7 +137,6 @@ static {System.loadLibrary("jniortools");}
 
 	// Solve the problem.
 	solution = model.solveWithParameters(searchParameters);
-	
     }
     
     public long[][] getSolution() {
@@ -152,10 +150,8 @@ static {System.loadLibrary("jniortools");}
 		index = solution.value(model.nextVar(index));
 		j++;
 	    }
-	   
 	}
 	return sol;
-	
     }
     
     public void printSolution() {

@@ -36,10 +36,4 @@ public class Vehicle {
 	public List<Mailbox> getMailboxes() {
 	    return mailboxes;
 	}
-	
-	
-	
-	
-
-
 }
