@@ -88,7 +88,7 @@ public class DataTransformer {
 	return vehicles.size() + 2 * demands.size() + 1;
     }
     
-    public int[][] getRequests(){
+    private int[][] getRequests(){
 	int[][] requests = new int[demands.size()][2];
 	for(int i=0; i < demands.size(); i++) {
 	    requests[i][0]= 2*i + getVehicleNumber();
@@ -97,7 +97,7 @@ public class DataTransformer {
 	return requests;
     }
     
-    public long [] getDeliveryTime() {
+    private long [] getDeliveryTime() {
 	long[] deliveryTimes = new long[getNodeNumber()];
 	int n = this.getVehicleNumber();
 	for(int i=0; i < n; i++) {
@@ -111,14 +111,14 @@ public class DataTransformer {
     }
 
     
-    public void getVehicleStartsAndEnds(int[] vehicleStarts, int[] vehicleEnds) {
+    private void getVehicleStartsAndEnds(int[] vehicleStarts, int[] vehicleEnds) {
 	for (int i = 0; i < vehicles.size(); i++) {
 	    vehicleStarts[i] = i;
 	    vehicleEnds[i] = this.getNodeNumber() - 1;
 	}
     }
     
-    public void getMatrices(long[][] distMatrix, long[][] timeMatrix, long[][] energyMatrix){
+    private void getMatrices(long[][] distMatrix, long[][] timeMatrix, long[][] energyMatrix){
 	for (int i = 0; i < getNodeNumber()-1; i++) {
 	    String iId = nodeTable.get(i);
 	    int iIdx = -1;
@@ -142,7 +142,7 @@ public class DataTransformer {
 	}
     }
     
-    public void getVehicleCapacities(long[] smallLetterCap, long[] largeLetterCap, long[] cargoCap) {
+    private void getVehicleCapacities(long[] smallLetterCap, long[] largeLetterCap, long[] cargoCap) {
 	for (int i = 0; i < this.getVehicleNumber(); i++) {
 	    Vehicle v = vehicles.get(i);
 	    for (Mailbox m : v.getMailboxes()) {
@@ -157,7 +157,7 @@ public class DataTransformer {
 	}
     }
     
-    public void getDemands(long[] smallLetterDemands, long[] largeLetterDemands, long[] cargoDemands) {
+    private void getDemands(long[] smallLetterDemands, long[] largeLetterDemands, long[] cargoDemands) {
 	int n = this.getVehicleNumber();
 	for (int i = 0; i < demands.size(); i++) {
 	    Demand d = demands.get(i);
