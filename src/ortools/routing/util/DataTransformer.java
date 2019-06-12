@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ortools.routing.model.Demand;
-import ortools.routing.model.Demand.Request;
 import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
 import ortools.routing.solver.DataModel;
