@@ -19,12 +19,12 @@
 			"arrayDemandId": [],
 			"name": "smallLetter",
 			"isEmpty": {
-				"$numberInt": "1"
+				"$numberInt": "0"
 			},
 			"_id": {
 				"$numberInt": "1"
 			},
-			"demandId": ""
+			"demandId": "5cf79e132e67cb06b099b9ad"
 		},
 		{
 			"arrayDemandId": [],
@@ -92,6 +92,7 @@
 			}
 		}
 	],
+	"state": "waiting",
 	"__v": {
 		"$numberInt": "1"
 	},
@@ -102,7 +103,7 @@
 	},
 	"updatedAt": {
 		"$date": {
-			"$numberLong": "1559724874904"
+			"$numberLong": "1559731731135"
 		}
 	}
 }

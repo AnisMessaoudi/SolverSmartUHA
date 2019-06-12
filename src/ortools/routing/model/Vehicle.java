@@ -36,4 +36,9 @@ public class Vehicle {
 	public List<Mailbox> getMailboxes() {
 	    return mailboxes;
 	}
+
+	public int getEnergy() {
+	    return energy;
+	    
+	}
 }

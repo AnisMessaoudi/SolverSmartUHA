@@ -71,7 +71,7 @@ public class JsonEncryptor {
 	
 	planning.put("vehicle", vehicles);
 	
-	PrintWriter pw = new PrintWriter("jsonFiles/test.json"); 
+	PrintWriter pw = new PrintWriter("jsonFiles/planing.json"); 
 	pw.write(planning.toJSONString()); 		
 	pw.flush(); 
 	pw.close(); 

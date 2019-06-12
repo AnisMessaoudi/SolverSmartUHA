@@ -64,12 +64,14 @@ public class DataTransformer {
 	data.smallLetterDemands = new long[this.getNodeNumber()];
 	data.largeLetterDemands = new long[this.getNodeNumber()];
 	data.cargoDemands = new long[this.getNodeNumber()];
+	data.vehicleEnergy = new long[this.getVehicleNumber()];
 	
 	data.nodeNumber = this.getNodeNumber();
 	this.getMatrices(data.distanceMatrix, data.timeMatrix, data.energyMatrix);
 	data.requests = this.getRequests();
 	data.deliveryTimes = this.getDeliveryTime();
 	data.vehicleNumber = this.getVehicleNumber();
+	data.vehicleEnergy = this.getVehicleEnergy();
 	this.getVehicleStartsAndEnds(data.vehicleStarts, data.vehicleEnds);
 	this.getVehicleCapacities(data.vehicleSmallLetterCapacity,
 		data.vehicleLargeLetterCapacity,
@@ -77,7 +79,10 @@ public class DataTransformer {
 	this.getDemands(data.smallLetterDemands,
 		data.largeLetterDemands,
 		data.cargoDemands);
+	
     }
+
+
 
     public int getVehicleNumber() {
 	return vehicles.size();
@@ -97,10 +102,11 @@ public class DataTransformer {
     }
     
     private long [] getDeliveryTime() {
+	long actualtime = 1559329320285L;
 	long[] deliveryTimes = new long[getNodeNumber()];
 	int n = this.getVehicleNumber();
 	for(int i=0; i < n; i++) {
-	    deliveryTimes[i] = 1559329300285L;
+	    deliveryTimes[i] = actualtime;
 	}
 	for(int j=0; j < demands.size(); j++) {
 	    deliveryTimes[2*j + n] = demands.get(j).getDeliveryTime();
@@ -109,6 +115,13 @@ public class DataTransformer {
 	return deliveryTimes;
     }
 
+    private long[] getVehicleEnergy() {
+	long vehicleEnergy[] = new long[getVehicleNumber()];
+	for (int i = 0; i < vehicleEnergy.length; i++) {
+	    vehicleEnergy[i] = (long) vehicles.get(i).getEnergy();
+	}
+	return vehicleEnergy;
+    }
     
     private void getVehicleStartsAndEnds(int[] vehicleStarts, int[] vehicleEnds) {
 	for (int i = 0; i < vehicles.size(); i++) {
@@ -131,7 +144,6 @@ public class DataTransformer {
 		String jId= nodeTable.get(j);
 		for (Entry<Integer, String> entry1 : Utils.globalNodeTable.entrySet()) {
 		    if (entry1.getValue().equals(jId)) {
-			//System.out.println("(" +i+","+j+")  " +iIdx + " : " + entry1.getKey());
 			distMatrix[i][j] = Utils.globalDistanceMatrix[iIdx][entry1.getKey()];
 			timeMatrix[i][j] = Utils.globalTimeMatrix[iIdx][entry1.getKey()];
 			break;

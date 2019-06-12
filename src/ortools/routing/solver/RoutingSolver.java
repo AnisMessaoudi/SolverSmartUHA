@@ -54,7 +54,7 @@ static {System.loadLibrary("jniortools");}
 	// Add Distance constraint.
 	model.addDimension(transitCallbackIndex, // transit callback index
 		0, // no slack
-		3000, // vehicle maximum travel distance
+		Utils.MaxDistance, // vehicle maximum travel distance
 		true, // start cumul to zero
 		"Distance");
 	RoutingDimension distanceDimension = model.getMutableDimension("Distance");
