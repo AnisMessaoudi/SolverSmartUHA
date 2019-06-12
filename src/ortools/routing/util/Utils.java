@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Utils {
+    
+    public static long MaxEnergy = Long.MAX_VALUE;
+    public static long MaxDistance = Long.MAX_VALUE;
 
     public static long [][] globalDistanceMatrix = {
 	    {0, 160, 287, 264},
@@ -28,6 +31,7 @@ public class Utils {
     };
     
     public static Map<Integer, String> globalNodeTable = new HashMap<>();
+    
     static {
 	globalNodeTable.put(0, "5ce80b22293b8439240d18d4"); //Lumiere
 	globalNodeTable.put(1, "5ce80b26293b8439240d18d6"); //Werner

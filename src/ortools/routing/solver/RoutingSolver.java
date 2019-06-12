@@ -14,6 +14,7 @@ import com.google.ortools.constraintsolver.main;
 
 import ortools.routing.util.DataTransformer;
 import ortools.routing.util.JsonDecryptor;
+import ortools.routing.util.Utils;
 
 public class RoutingSolver {
 
@@ -126,7 +127,22 @@ static {System.loadLibrary("jniortools");}
 		"cargoCapacity");
 	
 	//Add energy constraint
-
+	final int energyCallbackIndex =
+		model.registerTransitCallback((long fromIndex, long toIndex) -> {
+		    // Convert from routing variable Index to user NodeIndex.
+		    int fromNode = manager.indexToNode(fromIndex);
+		    int toNode = manager.indexToNode(toIndex);
+		    return data.energyMatrix[fromNode][toNode];
+		});
+	
+	model.addDimension(energyCallbackIndex, 0, Utils.MaxEnergy, true, "Energy");
+	RoutingDimension energyDimension = model.getMutableDimension("Energy");
+	for (int i = 0; i < data.vehicleNumber; i++) {
+	    long index = model.start(i);
+	    energyDimension.cumulVar(index).isLessOrEqual(data.vehicleEnergy[i]);
+	}
+	
+	
 	
 	// Setting first solution heuristic.
 	RoutingSearchParameters searchParameters =

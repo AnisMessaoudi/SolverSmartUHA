@@ -16,6 +16,8 @@ public class DataModel {
     public int[] vehicleStarts;
     public int[] vehicleEnds;
     
+    public long[] vehicleEnergy;
+    
     public long[] vehicleSmallLetterCapacity;
     public long[] vehicleLargeLetterCapacity;
     public long[] vehicleCargoCapacity;
