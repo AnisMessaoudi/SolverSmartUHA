@@ -23,52 +23,58 @@ public class JsonEncryptor {
 
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes", "unlikely-arg-type" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void writePlaning() throws FileNotFoundException {
 
-	JSONObject jo = new JSONObject(); 
-	Map m = new LinkedHashMap(1); 
-	m.put("$oid", "....");
-	jo.put("_id",m); 
-
-
-	JSONArray vehicle = new JSONArray();
-
-	for (int i = 0; i < dt.getVehicleNumber(); ++i) {
-	    JSONObject jo1=new JSONObject(); 
-	    Map m1 = new LinkedHashMap(1); 
-	    m1.put("$oid",dt.getVehicles().get(i).getId()); 
-
+	JSONObject planning = new JSONObject();
+	
+	JSONObject planningId = new JSONObject();
+	planningId.put("$oid", "....");
+	planning.put("_id",planningId); 
+	
+	JSONArray vehicles = new JSONArray();
+	for (int i = 0; i < dt.getVehicleNumber(); i++) {
+	    JSONObject vehicle = new JSONObject();
+	    JSONObject vehicleId = new JSONObject();
+	    vehicleId.put("$oid", dt.getVehicles().get(i).getId());
+	    vehicle.put("vehicleId", vehicleId);
 	    
-	    JSONArray destination = new JSONArray(); 
-	    JSONObject jo2 = new JSONObject();
-	    for (int j = 0; j < dt.getNodeNumber()-1; j++) {
-		Map m2 = new LinkedHashMap(1); 
-		m2.put("$oid", dt.getNodeTable().get((int)solution[i][j]));
-		jo2.put("destinationId", m2);
-	    }  
-
-	    for(int k = 0; k < dt.getVehicleNumber(); ++k) {
-		JSONArray demand = new JSONArray();
-		Map m3 = new LinkedHashMap(1); 
-		m3.put("$oid", dt.getDemands().get(k).getId());
-		demand.add(m3);		
-		jo2.put("demanId", m3);
+	    JSONArray destinations = new JSONArray();
+	    for (int j = 1; j < dt.getNodeNumber() - 1; j++) {
+		JSONObject destination = new JSONObject();
+		JSONObject destinationId = new JSONObject();
+		destinationId.put("$oid", dt.getNodeTable().get((int)solution[i][j]));
+		destination.put("destinationId", destinationId);
+		
+		JSONArray demands = new JSONArray();
+		JSONObject demand = new JSONObject();
+		demand.put("$oid", dt.getDemands().get((j+1)/2-1).getId());
+		demands.add(demand);
+		
+		String actualDestId = dt.getNodeTable().get((int)solution[i][j]);
+		if(j < dt.getNodeNumber() - 2 ) {
+        		while(actualDestId.equals(dt.getNodeTable().get((int)solution[i][j+1]))) {
+        		    JSONObject demand2 = new JSONObject();
+        		    demand2.put("$oid", dt.getNodeTable().get((int)solution[i][j+1]));
+        		    demands.add(demand2);
+        		    j++;
+        		}
+		}
+		destination.put("demandId", demands);
+		
+		destinations.add(destination);
 	    }
-
-	    jo1.put("vehicleId", m1);
-	    jo1.put("destination",destination);
-
-	    destination.add(jo2);			
-	    vehicle.add(jo1);
+	    vehicle.put("destination", destinations);
+	    
+	    vehicles.add(vehicle);
 	}
-
-
-	jo.put("vehicle", vehicle); 		
+	
+	planning.put("vehicle", vehicles);
+	
 	PrintWriter pw = new PrintWriter("jsonFiles/test.json"); 
-	pw.write(jo.toJSONString()); 		
+	pw.write(planning.toJSONString()); 		
 	pw.flush(); 
 	pw.close(); 
-	System.out.println(" OK: "); 
+	System.out.println("OK: Fichier encrypté !"); 
     } 
 }

@@ -17,7 +17,6 @@ import ortools.routing.model.Mailbox;
 import ortools.routing.model.Vehicle;
 import ortools.routing.solver.DataModel;
 import ortools.routing.solver.RoutingSolver;
-import ortools.routing.solver.Solver2;
 
 
 public class JsonDecryptor {
@@ -185,40 +184,40 @@ public class JsonDecryptor {
 	for (int i = 0; i < 4; i++) {
 	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
 	}
-
-	System.out.println(data.vehicleStarts[0]);
-	System.out.println(data.vehicleEnds[0]);
+//
+//	System.out.println(data.vehicleStarts[0]);
+//	System.out.println(data.vehicleEnds[0]);
+//	
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(data.distanceMatrix[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
+//	System.out.println("");
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(data.timeMatrix[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
+//	
+//	for (int j = 0; j < 10; j++) {
+//	    System.out.println(data.deliveryTimes[j]);
+//	}
+//	
+//	System.out.println(data.vehicleSmallLetterCapacity[0]);
+//	System.out.println(data.vehicleLargeLetterCapacity[0]);
+//	System.out.println(data.vehicleCargoCapacity[0]);
+//	
+//	for (int j = 0; j < 10; j++) {
+//	    System.out.print(data.smallLetterDemands[j] + " | ");
+//	    System.out.print(data.largeLetterDemands[j] + " | ");
+//	    System.out.println(data.cargoDemands[j]);
+//	}
 	
-	for (int i = 0; i < 10; i++) {
-	    for (int j = 0; j < 10; j++) {
-		System.out.print(data.distanceMatrix[i][j] + "\t|");
-	    }
-	    System.out.println("");
-	}
-	System.out.println("");
-	for (int i = 0; i < 10; i++) {
-	    for (int j = 0; j < 10; j++) {
-		System.out.print(data.timeMatrix[i][j] + "\t|");
-	    }
-	    System.out.println("");
-	}
 	
-	for (int j = 0; j < 10; j++) {
-	    System.out.println(data.deliveryTimes[j]);
-	}
-	
-	System.out.println(data.vehicleSmallLetterCapacity[0]);
-	System.out.println(data.vehicleLargeLetterCapacity[0]);
-	System.out.println(data.vehicleCargoCapacity[0]);
-	
-	for (int j = 0; j < 10; j++) {
-	    System.out.print(data.smallLetterDemands[j] + " | ");
-	    System.out.print(data.largeLetterDemands[j] + " | ");
-	    System.out.println(data.cargoDemands[j]);
-	}
-	
-	
-	Solver2 rs = new Solver2(data);
+	RoutingSolver rs = new RoutingSolver(data);
 
 	rs.solve();
 	rs.printSolution();
@@ -226,6 +225,11 @@ public class JsonDecryptor {
 	
 	JsonEncryptor enc = new JsonEncryptor(dt, rs.getSolution());
 	enc.writePlaning();
+	
+	long[][] tab = rs.getSolution();
+	for (int i = 0; i < 9; i++) {
+	    System.out.println(tab[0][i]);
+	}
 
 	   	    
     }
