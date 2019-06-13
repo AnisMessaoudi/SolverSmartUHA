@@ -102,7 +102,7 @@ public class DataTransformer {
     }
     
     private long [] getDeliveryTime() {
-	long actualtime = 1559329320285L;
+	long actualtime = 1559329320285L; //put Sys.currentTime mais le temps des demandes doivent etre > currentTime
 	long[] deliveryTimes = new long[getNodeNumber()];
 	int n = this.getVehicleNumber();
 	for(int i=0; i < n; i++) {
