@@ -1,4 +1,4 @@
-package ortools.routing.model;
+package fr.uha.ensisa.project.smartUHA.model;
 
 public class Mailbox {
 

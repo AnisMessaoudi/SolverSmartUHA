@@ -1,11 +1,11 @@
-package ortools.routing;
+package fr.uha.ensisa.project.smartUHA;
 
-import ortools.routing.solver.DataModel;
-import ortools.routing.solver.RoutingSolver;
-import ortools.routing.util.DataTransformer;
-import ortools.routing.util.JsonDecryptor;
+import fr.uha.ensisa.project.smartUHA.solver.DataModel;
+import fr.uha.ensisa.project.smartUHA.solver.RoutingSolver;
+import fr.uha.ensisa.project.smartUHA.util.DataTransformer;
+import fr.uha.ensisa.project.smartUHA.util.JsonDecryptor;
 
-public class Main {
+public class SmartUHA {
 
     public static void main(String[] args) throws Exception {
 	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");

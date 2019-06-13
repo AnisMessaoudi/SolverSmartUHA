@@ -1,4 +1,4 @@
-package ortools.routing.util;
+package fr.uha.ensisa.project.smartUHA.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ortools.routing.model.Demand;
-import ortools.routing.model.Mailbox;
-import ortools.routing.model.Vehicle;
-import ortools.routing.solver.DataModel;
+import fr.uha.ensisa.project.smartUHA.model.Demand;
+import fr.uha.ensisa.project.smartUHA.model.Mailbox;
+import fr.uha.ensisa.project.smartUHA.model.Vehicle;
+import fr.uha.ensisa.project.smartUHA.solver.DataModel;
 
 public class DataTransformer {
     

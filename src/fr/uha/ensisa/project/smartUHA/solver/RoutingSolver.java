@@ -1,4 +1,4 @@
-package ortools.routing.solver;
+package fr.uha.ensisa.project.smartUHA.solver;
 
 import java.util.Date;
 
@@ -12,9 +12,9 @@ import com.google.ortools.constraintsolver.RoutingSearchParameters;
 import com.google.ortools.constraintsolver.Solver;
 import com.google.ortools.constraintsolver.main;
 
-import ortools.routing.util.DataTransformer;
-import ortools.routing.util.JsonDecryptor;
-import ortools.routing.util.Utils;
+import fr.uha.ensisa.project.smartUHA.util.DataTransformer;
+import fr.uha.ensisa.project.smartUHA.util.JsonDecryptor;
+import fr.uha.ensisa.project.smartUHA.util.Utils;
 
 public class RoutingSolver {
 

@@ -1,4 +1,4 @@
-package ortools.routing.util;
+package fr.uha.ensisa.project.smartUHA.util;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import ortools.routing.model.Demand;
-import ortools.routing.model.Demand.Request;
-import ortools.routing.model.Demand.State;
-import ortools.routing.model.Mailbox;
-import ortools.routing.model.Vehicle;
-import ortools.routing.solver.DataModel;
-import ortools.routing.solver.RoutingSolver;
+import fr.uha.ensisa.project.smartUHA.model.Demand;
+import fr.uha.ensisa.project.smartUHA.model.Mailbox;
+import fr.uha.ensisa.project.smartUHA.model.Vehicle;
+import fr.uha.ensisa.project.smartUHA.model.Demand.Request;
+import fr.uha.ensisa.project.smartUHA.model.Demand.State;
+import fr.uha.ensisa.project.smartUHA.solver.DataModel;
+import fr.uha.ensisa.project.smartUHA.solver.RoutingSolver;
 
 
 public class JsonDecryptor {

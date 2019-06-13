@@ -1,4 +1,4 @@
-package ortools.routing.util;
+package fr.uha.ensisa.project.smartUHA.util;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -75,6 +75,5 @@ public class JsonEncryptor {
 	pw.write(planning.toJSONString()); 		
 	pw.flush(); 
 	pw.close(); 
-	System.out.println("OK: Fichier encrypté !"); 
     } 
 }
