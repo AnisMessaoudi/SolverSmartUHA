@@ -10,6 +10,8 @@ public class Utils {
     
     public static long MaxEnergy = Long.MAX_VALUE;
     public static long MaxDistance = Long.MAX_VALUE;
+    public static long MaxTime = Long.MAX_VALUE;
+    public static long MaxWaitingTime = Long.MAX_VALUE;
 
     public static long [][] globalDistanceMatrix = {
 	    {0, 160, 287, 264},

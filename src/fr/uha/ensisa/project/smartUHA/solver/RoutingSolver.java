@@ -58,7 +58,7 @@ static {System.loadLibrary("jniortools");}
 		true, // start cumul to zero
 		"Distance");
 	RoutingDimension distanceDimension = model.getMutableDimension("Distance");
-	distanceDimension.setGlobalSpanCostCoefficient(100);
+	distanceDimension.setGlobalSpanCostCoefficient(100); // prioritize distance dimension
 	
 	// Define Transportation Requests.
 	Solver solver = model.solver();
@@ -66,10 +66,13 @@ static {System.loadLibrary("jniortools");}
 	    long pickupIndex = manager.nodeToIndex(request[0]);
 	    long deliveryIndex = manager.nodeToIndex(request[1]);
 	    model.addPickupAndDelivery(pickupIndex, deliveryIndex);
-	    solver.addConstraint(
-		    solver.makeEquality(model.vehicleVar(pickupIndex), model.vehicleVar(deliveryIndex)));
-	    solver.addConstraint(solver.makeLessOrEqual(
-		    distanceDimension.cumulVar(pickupIndex), distanceDimension.cumulVar(deliveryIndex)));
+	    
+	    // pickup and delivery location need to be reached by the same vehicle
+	    solver.addConstraint(solver.makeEquality(model.vehicleVar(pickupIndex),
+		    model.vehicleVar(deliveryIndex))); 
+	    // pickup location need to be explore before the delivery one
+	    solver.addConstraint(solver.makeLessOrEqual(distanceDimension.cumulVar(pickupIndex),
+		    distanceDimension.cumulVar(deliveryIndex)));
 	}
 	
 	
@@ -82,7 +85,11 @@ static {System.loadLibrary("jniortools");}
 		    return data.timeMatrix[fromNode][toNode];
 		});
 	//Create time dimension
-	model.addDimension(timeCallbackIndex, Long.MAX_VALUE, Long.MAX_VALUE, false, "Time");
+	model.addDimension(timeCallbackIndex,
+		Utils.MaxWaitingTime, // max waiting time on a location for a vehicle
+		Utils.MaxTime, // max time for each vehicle's route
+		false, // dont start to 0
+		"Time");
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
 	// Add time window constraints for each pickup location.
 	for (int i = 0; i < data.vehicleNumber; ++i) {
@@ -126,6 +133,7 @@ static {System.loadLibrary("jniortools");}
 		true, // start cumul to zero
 		"cargoCapacity");
 	
+	
 	//Add energy constraint
 	final int energyCallbackIndex =
 		model.registerTransitCallback((long fromIndex, long toIndex) -> {
@@ -134,8 +142,10 @@ static {System.loadLibrary("jniortools");}
 		    int toNode = manager.indexToNode(toIndex);
 		    return data.energyMatrix[fromNode][toNode];
 		});
-	
-	model.addDimension(energyCallbackIndex, 0, Utils.MaxEnergy, true, "Energy");
+	model.addDimension(energyCallbackIndex, 0, // no slack
+		Utils.MaxEnergy, // maximum energy's vehicle
+		true, 
+		"Energy");
 	RoutingDimension energyDimension = model.getMutableDimension("Energy");
 	for (int i = 0; i < data.vehicleNumber; i++) {
 	    long index = model.start(i);
