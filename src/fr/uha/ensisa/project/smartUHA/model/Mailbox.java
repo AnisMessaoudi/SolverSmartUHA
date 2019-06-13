@@ -5,7 +5,7 @@ public class Mailbox {
     private String name;
     private boolean isEmpty ;
     
-    public Mailbox(String name, Boolean isEmpty) {
+    public Mailbox(String name, boolean isEmpty) {
 	this.name = name;
 	this.isEmpty = isEmpty;
     }

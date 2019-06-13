@@ -16,7 +16,7 @@ public class DataTransformer {
     private List<Vehicle> vehicles = new ArrayList<>();
     private List<Demand> demands = new ArrayList<>();
     
-    //map entre l'index et l'id d'un point 
+    //map between index and id location
     private Map<Integer, String> nodeTable = new HashMap<>();
 
 
@@ -51,8 +51,9 @@ public class DataTransformer {
         return nodeTable;
     }
 
+    /* put data in the argument DataModel */
     public void getData(DataModel data) {
-	//initialize arrays
+	/* instance arrays */
 	data.distanceMatrix = new long[this.getNodeNumber()][this.getNodeNumber()];
 	data.timeMatrix = new long[this.getNodeNumber()][this.getNodeNumber()];
 	data.energyMatrix = new long[this.getNodeNumber()][this.getNodeNumber()]; 
@@ -66,6 +67,7 @@ public class DataTransformer {
 	data.cargoDemands = new long[this.getNodeNumber()];
 	data.vehicleEnergy = new long[this.getVehicleNumber()];
 	
+	/* transform data from vehicles and demands lists */
 	data.nodeNumber = this.getNodeNumber();
 	this.getMatrices(data.distanceMatrix, data.timeMatrix, data.energyMatrix);
 	data.requests = this.getRequests();
@@ -83,15 +85,17 @@ public class DataTransformer {
     }
 
 
-
+    /* return number of available vehicles */
     public int getVehicleNumber() {
 	return vehicles.size();
     }
     
+    /* return number of location in the intern model */
     public int getNodeNumber() {
 	return vehicles.size() + 2 * demands.size() + 1;
     }
     
+    /* return locations requests from demands */
     private int[][] getRequests(){
 	int[][] requests = new int[demands.size()][2];
 	for(int i=0; i < demands.size(); i++) {
@@ -101,6 +105,7 @@ public class DataTransformer {
 	return requests;
     }
     
+    /* return when the vehicle must be for each location */
     private long [] getDeliveryTime() {
 	long actualtime = 1559329320285L; //put Sys.currentTime mais le temps des demandes doivent etre > currentTime
 	long[] deliveryTimes = new long[getNodeNumber()];
@@ -115,6 +120,7 @@ public class DataTransformer {
 	return deliveryTimes;
     }
 
+    /* return remaining energy for each vehicle */
     private long[] getVehicleEnergy() {
 	long vehicleEnergy[] = new long[getVehicleNumber()];
 	for (int i = 0; i < vehicleEnergy.length; i++) {
@@ -123,6 +129,7 @@ public class DataTransformer {
 	return vehicleEnergy;
     }
     
+    /* return starting location for each vehicle and init. abstract location for solver */
     private void getVehicleStartsAndEnds(int[] vehicleStarts, int[] vehicleEnds) {
 	for (int i = 0; i < vehicles.size(); i++) {
 	    vehicleStarts[i] = i;
@@ -130,6 +137,7 @@ public class DataTransformer {
 	}
     }
     
+    /* generate local matrices matching with internal index's node locations from global matrices in Utils */
     private void getMatrices(long[][] distMatrix, long[][] timeMatrix, long[][] energyMatrix){
 	for (int i = 0; i < getNodeNumber()-1; i++) {
 	    String iId = nodeTable.get(i);
@@ -153,13 +161,14 @@ public class DataTransformer {
 	}
     }
     
+    /* return capacities to carry small, large letter and cargo for each vehicle */
     private void getVehicleCapacities(long[] smallLetterCap, long[] largeLetterCap, long[] cargoCap) {
 	for (int i = 0; i < this.getVehicleNumber(); i++) {
 	    Vehicle v = vehicles.get(i);
 	    for (Mailbox m : v.getMailboxes()) {
 		String name = m.getName();
 		if (name.equals("smallBox"))
-		    smallLetterCap[i] += 1;
+		    smallLetterCap[i] += 1; // m.getIsEmpty();
 		if (name.equals("largeBox"))
 		    largeLetterCap[i] += 1;
 		if (name.equals("cargo"))
@@ -168,6 +177,7 @@ public class DataTransformer {
 	}
     }
     
+    /* return the weights of each cargo for each vehicle */
     private void getDemands(long[] smallLetterDemands, long[] largeLetterDemands, long[] cargoDemands) {
 	int n = this.getVehicleNumber();
 	for (int i = 0; i < demands.size(); i++) {

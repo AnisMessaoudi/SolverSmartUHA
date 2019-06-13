@@ -144,11 +144,12 @@ static {System.loadLibrary("jniortools");}
 		});
 	model.addDimension(energyCallbackIndex, 0, // no slack
 		Utils.MaxEnergy, // maximum energy's vehicle
-		true, 
+		true, // start to 0
 		"Energy");
 	RoutingDimension energyDimension = model.getMutableDimension("Energy");
 	for (int i = 0; i < data.vehicleNumber; i++) {
 	    long index = model.start(i);
+	    // for each vehicle, journey cumul energy should be less than the remaining energy
 	    energyDimension.cumulVar(index).isLessOrEqual(data.vehicleEnergy[i]);
 	}
 	
@@ -165,6 +166,7 @@ static {System.loadLibrary("jniortools");}
 	solution = model.solveWithParameters(searchParameters);
     }
     
+    /* return path (succession of location) for each vehicle  */
     public long[][] getSolution() {
 	long[][] sol = new long[data.vehicleNumber][data.nodeNumber - 1];
 	for (int i = 0; i < data.vehicleNumber; i++) {
@@ -180,6 +182,7 @@ static {System.loadLibrary("jniortools");}
 	return sol;
     }
     
+    /* print the succession of location with some info (date, capacity) for each vehicle */
     public void printSolution() {
 	RoutingDimension timeDimension = model.getMutableDimension("Time");
 	StringBuilder sb = new StringBuilder();
@@ -202,8 +205,6 @@ static {System.loadLibrary("jniortools");}
 		sb.append(" \n\t smallCapacite(" + smallLoad + "/" + data.vehicleSmallLetterCapacity[i] + "),");
 		sb.append(" \n\t largeCapacite(" + largeLoad + "/" + data.vehicleLargeLetterCapacity[i] + "),");
 		sb.append(" \n\t cargoCapacite(" + cargoLoad + "/" + data.vehicleCargoCapacity[i] + ")");
-		
-		//route += nodeIndex +" Time(" + date + ") -> ";
 		sb.append("  ->\n");
 		long previousIndex = index;
 		index = solution.value(model.nextVar(index));
@@ -211,22 +212,6 @@ static {System.loadLibrary("jniortools");}
 	    }
 	    sb.append("\nDistance of the route: " + routeDistance + "m\n");
 	}
-	
 	System.out.println(sb.toString());
     }
-    
-    public static void main(String[] args) throws Exception {
-	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
-	
-	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
-	
-	DataModel data = new DataModel();
-	dt.getData(data);
-	
-	RoutingSolver rs = new RoutingSolver(data);
-	
-	rs.solve();
-	rs.printSolution();
-    }
-
 }

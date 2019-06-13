@@ -31,7 +31,7 @@ public class JsonDecryptor {
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List<Vehicle> readVehcileFile() {
+    public List<Vehicle> readVehicleFile() {
 	List<Vehicle> vehicles = new ArrayList<>();
 	JSONParser parser = new JSONParser();
 	try {
@@ -50,9 +50,7 @@ public class JsonDecryptor {
 		id=(String) pair.getValue();
 	    }
 	    
-	    
 	    String name = (String) jsonObject.get("name");
-	    
 	    
 	    int energy = 0;
 	    map = (Map) jsonObject.get("energy");
@@ -76,7 +74,9 @@ public class JsonDecryptor {
 	    JSONArray jsonArray = (JSONArray) jsonObject.get("mailboxes"); 
 	    for(int i=0;i<jsonArray.size();i++) {
 		JSONObject job2=(JSONObject) jsonArray.get(i);
-		mailboxes.add(new Mailbox((String)job2.get("name"), (Boolean)job2.get("isEmpty")));
+		String mailboxName = (String)job2.get("name");
+		int isEmpty = 0;
+		mailboxes.add(new Mailbox(mailboxName, (Boolean)job2.get("isEmpty")));
 	    }
 	    vehicles.add(new Vehicle(id, name, energy, destinationId, mailboxes));
 	}
@@ -139,7 +139,6 @@ public class JsonDecryptor {
 		    }
 		}
 		Demand d = new Demand(id, isUrgent, request, originId, destinationId, deliveryTime, state);
-		//System.out.println(d.toString());
 		demands.add(d);	    
 		}
 	}
@@ -149,89 +148,85 @@ public class JsonDecryptor {
 	return demands;
     }
     
-
-    public static void main(String[] args) throws Exception {
-	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
-	
-	DataTransformer dt = new DataTransformer(dec.readVehcileFile(), dec.readDemandFile());
-	
-
-	
-//	System.out.println(dt.getNodeNumber());
-//	System.out.println(dt.getVehicleNumber());
-//	int [][] tab1 = dt.getRequests();
-//	for (int i = 0; i < 4; i++) {
-//	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
-//	}
-//	int tab11[]; int tab12[] = null;
-//	dt.getVehicleStartsAndEnds(tab11,tab12);
-//	for (int i = 0; i < 1; i++) {
-//	    System.out.println(tab11[i]);
-//	}
-//	long[][] tab2 = dt.getDistMatrix();
-//	for (int i = 0; i < 10; i++) {
-//	    for (int j = 0; j < 10; j++) {
-//		System.out.print(tab2[i][j] + "\t|");
-//	    }
-//	    System.out.println("");
-//	}
-	
-	DataModel data = new DataModel();
-	dt.getData(data);
-	
-	System.out.println(data.nodeNumber);
-	System.out.println(data.vehicleNumber);
-	for (int i = 0; i < 4; i++) {
-	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
-	}
+    			/*** main printing internal datas ***/
+//    public static void main(String[] args) throws Exception {
+//	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
+//	
+//	DataTransformer dt = new DataTransformer(dec.readVehicleFile(), dec.readDemandFile());
+//	
 //
-//	System.out.println(data.vehicleStarts[0]);
-//	System.out.println(data.vehicleEnds[0]);
 //	
-//	for (int i = 0; i < 10; i++) {
-//	    for (int j = 0; j < 10; j++) {
-//		System.out.print(data.distanceMatrix[i][j] + "\t|");
-//	    }
-//	    System.out.println("");
-//	}
-//	System.out.println("");
-//	for (int i = 0; i < 10; i++) {
-//	    for (int j = 0; j < 10; j++) {
-//		System.out.print(data.timeMatrix[i][j] + "\t|");
-//	    }
-//	    System.out.println("");
-//	}
+////	System.out.println(dt.getNodeNumber());
+////	System.out.println(dt.getVehicleNumber());
+////	int [][] tab1 = dt.getRequests();
+////	for (int i = 0; i < 4; i++) {
+////	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
+////	}
+////	int tab11[]; int tab12[] = null;
+////	dt.getVehicleStartsAndEnds(tab11,tab12);
+////	for (int i = 0; i < 1; i++) {
+////	    System.out.println(tab11[i]);
+////	}
+////	long[][] tab2 = dt.getDistMatrix();
+////	for (int i = 0; i < 10; i++) {
+////	    for (int j = 0; j < 10; j++) {
+////		System.out.print(tab2[i][j] + "\t|");
+////	    }
+////	    System.out.println("");
+////	}
 //	
-//	for (int j = 0; j < 10; j++) {
-//	    System.out.println(data.deliveryTimes[j]);
-//	}
+//	DataModel data = new DataModel();
+//	dt.getData(data);
 //	
-//	System.out.println(data.vehicleSmallLetterCapacity[0]);
-//	System.out.println(data.vehicleLargeLetterCapacity[0]);
-//	System.out.println(data.vehicleCargoCapacity[0]);
-//	
-//	for (int j = 0; j < 10; j++) {
-//	    System.out.print(data.smallLetterDemands[j] + " | ");
-//	    System.out.print(data.largeLetterDemands[j] + " | ");
-//	    System.out.println(data.cargoDemands[j]);
+//	System.out.println(data.nodeNumber);
+//	System.out.println(data.vehicleNumber);
+//	for (int i = 0; i < 4; i++) {
+//	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
 //	}
-	
-	
-	RoutingSolver rs = new RoutingSolver(data);
-
-	rs.solve();
-	rs.printSolution();
-	
-	
-	JsonEncryptor enc = new JsonEncryptor(dt, rs.getSolution());
-	enc.writePlaning();
-	
-	long[][] tab = rs.getSolution();
-	for (int i = 0; i < 9; i++) {
-	    System.out.println(tab[0][i]);
-	}
-
-	   	    
-    }
+////
+////	System.out.println(data.vehicleStarts[0]);
+////	System.out.println(data.vehicleEnds[0]);
+////	
+////	for (int i = 0; i < 10; i++) {
+////	    for (int j = 0; j < 10; j++) {
+////		System.out.print(data.distanceMatrix[i][j] + "\t|");
+////	    }
+////	    System.out.println("");
+////	}
+////	System.out.println("");
+////	for (int i = 0; i < 10; i++) {
+////	    for (int j = 0; j < 10; j++) {
+////		System.out.print(data.timeMatrix[i][j] + "\t|");
+////	    }
+////	    System.out.println("");
+////	}
+////	
+////	for (int j = 0; j < 10; j++) {
+////	    System.out.println(data.deliveryTimes[j]);
+////	}
+////	
+////	System.out.println(data.vehicleSmallLetterCapacity[0]);
+////	System.out.println(data.vehicleLargeLetterCapacity[0]);
+////	System.out.println(data.vehicleCargoCapacity[0]);
+////	
+////	for (int j = 0; j < 10; j++) {
+////	    System.out.print(data.smallLetterDemands[j] + " | ");
+////	    System.out.print(data.largeLetterDemands[j] + " | ");
+////	    System.out.println(data.cargoDemands[j]);
+////	}
+//	
+//	RoutingSolver rs = new RoutingSolver(data);
+//
+//	rs.solve();
+//	rs.printSolution();
+//	
+//	JsonEncryptor enc = new JsonEncryptor(dt, rs.getSolution());
+//	enc.writePlaning();
+//	
+//	long[][] tab = rs.getSolution();
+//	for (int i = 0; i < 9; i++) {
+//	    System.out.println(tab[0][i]);
+//	}
+//    }
 
 }

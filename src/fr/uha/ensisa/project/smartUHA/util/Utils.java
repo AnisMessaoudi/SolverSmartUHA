@@ -7,12 +7,22 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Utils {
+    /*** All of following informations will be probably different in the project,
+     *   we used this due to a lack of data ***/
     
+    /* maximum energy a vehicle can have (battery full charge) */
     public static long MaxEnergy = Long.MAX_VALUE;
+    
+    /* maximum distance a vehicle can travel */
     public static long MaxDistance = Long.MAX_VALUE;
+    
+    /* maximum duration time of a route */
     public static long MaxTime = Long.MAX_VALUE;
+    
+    /* maximum time a vehicle can wait at a location */
     public static long MaxWaitingTime = Long.MAX_VALUE;
 
+    /* distance, energy consumed and time between positions (index node are on the globalNodeTable */
     public static long [][] globalDistanceMatrix = {
 	    {0, 160, 287, 264},
 	    {160, 0, 133, 116},
@@ -32,6 +42,7 @@ public class Utils {
 	    {95, 42, 12, 0},
     };
     
+    /* map between index's and id's location */
     public static Map<Integer, String> globalNodeTable = new HashMap<>();
     
     static {
@@ -41,42 +52,5 @@ public class Utils {
 	globalNodeTable.put(3, "5cec2a4edaa0821eec2d9802"); //BU
     }
     
-    public static int getIndex(String id) {
-	for(Entry<Integer, String> entry : globalNodeTable.entrySet()) {
-	    if(entry.getValue() .equals(id))
-		return entry.getKey();
-	}
-	return -1;
-    
-    }
-    
-    public static String getId(int index) {
-	if (globalNodeTable.containsKey(index)){
-	    return globalNodeTable.get(index);
-	}
-	return null;
-    }
-    
-    public static String durationTime(long milliseconds) {
-	long uptime = milliseconds;
-	long days = TimeUnit.MILLISECONDS.toDays(uptime);
-	uptime -= TimeUnit.DAYS.toMillis(days);
 
-	long hours = TimeUnit.MILLISECONDS.toHours(uptime);
-	uptime -= TimeUnit.HOURS.toMillis(hours);
-
-	long minutes = TimeUnit.MILLISECONDS.toMinutes(uptime);
-	uptime -= TimeUnit.MINUTES.toMillis(minutes);
-
-	long seconds = TimeUnit.MILLISECONDS.toSeconds(uptime);
-
-	StringBuilder sb = new StringBuilder();
-	sb.append(days);
-	sb.append("d ");
-	sb.append(minutes);
-	sb.append("min ");
-	sb.append(seconds);
-	sb.append("sec ");
-	return sb.toString();
-    }
 }
