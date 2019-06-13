@@ -2,32 +2,32 @@ package fr.uha.ensisa.project.smartUHA.model;
 
 public class Mailbox {
 
-    private String name;
-    private int isEmpty ;
-    
-    public Mailbox(String name, int isEmpty) {
-	this.name = name;
-	this.isEmpty = isEmpty;
-    }
+	private String name;
+	private int isEmpty ;
 
-    @Override
-    public String toString() {
-	return "Mailbox [name=" + name + ", isEmpty=" + isEmpty + "]";
-    }
+	public Mailbox(String name, int isEmpty) {
+		this.name = name;
+		this.isEmpty = isEmpty;
+	}
 
-    public String getName() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return "Mailbox [name=" + name + ", isEmpty=" + isEmpty + "]";
+	}
 
-    public int isEmpty() {
-        return isEmpty;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getIsEmpty() {
-	return isEmpty;
-    }
-    
-    
-    
+	public int isEmpty() {
+		return isEmpty;
+	}
+
+	public int getIsEmpty() {
+		return isEmpty;
+	}
+
+
+
 
 }

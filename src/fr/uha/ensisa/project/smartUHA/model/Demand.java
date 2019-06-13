@@ -1,73 +1,73 @@
 package fr.uha.ensisa.project.smartUHA.model;
 
 public class Demand {
-    
-    public enum Request {
-	smallLetter,
-	largeLetter,
-	cargo1,
-	cargo3,
-	cargo6;
-    }
 
-    public enum State {
-	waitingConfirmation,
-	pendingOrigin,
-	pendingdestination,
-	inProgress,
-	pending, 
-	cancelled,
-	served;
-    }
-    
-    private String id;
-    private int isUrgent;
-    private Request request;
-    private String originId;
-    private String destinationId;
-    private long deliveryTime;
-    private State state;
-    
-    public Demand(String id, int isUrgent, Request request, String originId, String destinationId, long deliveryTime,
-	    State state) {
-	super();
-	this.id = id;
-	this.isUrgent = isUrgent;
-	this.request = request;
-	this.originId = originId;
-	this.destinationId = destinationId;
-	this.deliveryTime = deliveryTime;
-	this.state = state;
-    }
+	public enum Request {
+		smallLetter,
+		largeLetter,
+		cargo1,
+		cargo3,
+		cargo6;
+	}
 
-    @Override
-    public String toString() {
-	return "Demand [id=" + id + ", isUrgent=" + isUrgent + ", request=" + request + ", originId=" + originId
-		+ ", destinationId=" + destinationId + ", deliveryTime=" + deliveryTime + ", state=" + state + "]";
-    }
+	public enum State {
+		waitingConfirmation,
+		pendingOrigin,
+		pendingdestination,
+		inProgress,
+		pending, 
+		cancelled,
+		served;
+	}
 
-    public String getId() {
-        return id;
-    }
+	private String id;
+	private int isUrgent;
+	private Request request;
+	private String originId;
+	private String destinationId;
+	private long deliveryTime;
+	private State state;
 
-    public String getOriginId() {
-        return originId;
-    }
+	public Demand(String id, int isUrgent, Request request, String originId, String destinationId, long deliveryTime,
+			State state) {
+		super();
+		this.id = id;
+		this.isUrgent = isUrgent;
+		this.request = request;
+		this.originId = originId;
+		this.destinationId = destinationId;
+		this.deliveryTime = deliveryTime;
+		this.state = state;
+	}
 
-    public String getDestinationId() {
-        return destinationId;
-    }
-    
-    public long getDeliveryTime() {
-	return deliveryTime;
-    }
+	@Override
+	public String toString() {
+		return "Demand [id=" + id + ", isUrgent=" + isUrgent + ", request=" + request + ", originId=" + originId
+				+ ", destinationId=" + destinationId + ", deliveryTime=" + deliveryTime + ", state=" + state + "]";
+	}
 
-    public Request getRequest() {
-        return request;
-    }
-    
-    
-    
-    
+	public String getId() {
+		return id;
+	}
+
+	public String getOriginId() {
+		return originId;
+	}
+
+	public String getDestinationId() {
+		return destinationId;
+	}
+
+	public long getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public Request getRequest() {
+		return request;
+	}
+
+
+
+
 
 }

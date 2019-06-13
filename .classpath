@@ -7,11 +7,11 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="RoutingProblem/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="SolverSmartUHA/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/com.google.ortools.jar"/>
-	<classpathentry kind="lib" path="lib/protobuf.jar"/>
-	<classpathentry kind="lib" path="lib/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="tools/com.google.ortools.jar"/>
+	<classpathentry kind="lib" path="tools/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="tools/protobuf.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
