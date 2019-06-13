@@ -107,7 +107,7 @@ public class DataTransformer {
     
     /* return when the vehicle must be for each location */
     private long [] getDeliveryTime() {
-	long actualtime = 1559329320285L; //put Sys.currentTime mais le temps des demandes doivent etre > currentTime
+	long actualtime = 1259329320285L; //put Sys.currentTime mais le temps des demandes doivent etre > currentTime(pas le cas chez nous)
 	long[] deliveryTimes = new long[getNodeNumber()];
 	int n = this.getVehicleNumber();
 	for(int i=0; i < n; i++) {
@@ -167,10 +167,10 @@ public class DataTransformer {
 	    Vehicle v = vehicles.get(i);
 	    for (Mailbox m : v.getMailboxes()) {
 		String name = m.getName();
-		if (name.equals("smallBox"))
-		    smallLetterCap[i] += 1; // m.getIsEmpty();
-		if (name.equals("largeBox"))
-		    largeLetterCap[i] += 1;
+		if (name.equals("smallLetter"))
+		    smallLetterCap[i] += (long) m.getIsEmpty();
+		if (name.equals("largeLetter"))
+		    largeLetterCap[i] += (long) m.getIsEmpty();
 		if (name.equals("cargo"))
 		    cargoCap[i] += 6;
 	    }

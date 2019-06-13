@@ -11,7 +11,7 @@ public class SmartUHA {
     public static void main(String[] args) throws Exception {
 	
 	//decrypt json vehicles and demands files
-	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
+	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicle.json", "jsonFiles/demands.json");
 	DataTransformer dt = new DataTransformer(dec.readVehicleFile(), dec.readDemandFile());
 	
 	//transform data for the solver

@@ -60,25 +60,25 @@ public class JsonDecryptor {
 		energy=  Integer.parseInt((String) pair.getValue());
 	    }
 	    
-	    String destinationId="";
-	    JSONObject jsonObject2 = (JSONObject) parser.parse(jsonObject.get("destination").toString());
-	    for(Iterator iterator2 = jsonObject2.keySet().iterator(); iterator2.hasNext();) {
-		String key = (String) iterator2.next();
-		if ( key.equals("id")) {
-		    JSONObject jsonObject3 = (JSONObject) parser.parse(jsonObject2.get(key).toString());
-		    destinationId=jsonObject3.get("$oid").toString();
-		}
-	    }
-	    
+	    String position = jsonObject.get("lastPosition").toString();
+	    String positionId = Utils.globalNameToId.get(position);
+
 	    List<Mailbox> mailboxes = new ArrayList<Mailbox>();
-	    JSONArray jsonArray = (JSONArray) jsonObject.get("mailboxes"); 
+	    JSONArray jsonArray = (JSONArray) jsonObject.get("mailBoxes"); 
 	    for(int i=0;i<jsonArray.size();i++) {
 		JSONObject job2=(JSONObject) jsonArray.get(i);
 		String mailboxName = (String)job2.get("name");
 		int isEmpty = 0;
-		mailboxes.add(new Mailbox(mailboxName, (Boolean)job2.get("isEmpty")));
+		    map = (Map)job2.get("isEmpty");
+		    iterator = map.entrySet().iterator(); 
+		    while (iterator.hasNext()) { 
+			Map.Entry pair = iterator.next(); 
+			isEmpty=  Integer.parseInt((String) pair.getValue());
+		    }
+		mailboxes.add(new Mailbox(mailboxName, isEmpty));
+		
 	    }
-	    vehicles.add(new Vehicle(id, name, energy, destinationId, mailboxes));
+	    vehicles.add(new Vehicle(id, name, energy, positionId, mailboxes));
 	}
 	catch(Exception e) {
 	    e.printStackTrace();
@@ -150,30 +150,30 @@ public class JsonDecryptor {
     
     			/*** main printing internal datas ***/
 //    public static void main(String[] args) throws Exception {
-//	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicles.json", "jsonFiles/demands.json");
+//	JsonDecryptor dec = new JsonDecryptor("jsonFiles/vehicle.json", "jsonFiles/demands.json");
 //	
 //	DataTransformer dt = new DataTransformer(dec.readVehicleFile(), dec.readDemandFile());
 //	
 //
 //	
-////	System.out.println(dt.getNodeNumber());
-////	System.out.println(dt.getVehicleNumber());
-////	int [][] tab1 = dt.getRequests();
-////	for (int i = 0; i < 4; i++) {
-////	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
-////	}
-////	int tab11[]; int tab12[] = null;
-////	dt.getVehicleStartsAndEnds(tab11,tab12);
-////	for (int i = 0; i < 1; i++) {
-////	    System.out.println(tab11[i]);
-////	}
-////	long[][] tab2 = dt.getDistMatrix();
-////	for (int i = 0; i < 10; i++) {
-////	    for (int j = 0; j < 10; j++) {
-////		System.out.print(tab2[i][j] + "\t|");
-////	    }
-////	    System.out.println("");
-////	}
+//	System.out.println(dt.getNodeNumber());
+//	System.out.println(dt.getVehicleNumber());
+//	int [][] tab1 = dt.getRequests();
+//	for (int i = 0; i < 4; i++) {
+//	    System.out.println(tab1[i][0] + "-->" + tab1[i][1]);
+//	}
+//	int tab11[]; int tab12[] = null;
+//	dt.getVehicleStartsAndEnds(tab11,tab12);
+//	for (int i = 0; i < 1; i++) {
+//	    System.out.println(tab11[i]);
+//	}
+//	long[][] tab2 = dt.getDistMatrix();
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(tab2[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
 //	
 //	DataModel data = new DataModel();
 //	dt.getData(data);
@@ -183,42 +183,42 @@ public class JsonDecryptor {
 //	for (int i = 0; i < 4; i++) {
 //	    System.out.println(data.requests[i][0] + "-->" + data.requests[i][1]);
 //	}
-////
-////	System.out.println(data.vehicleStarts[0]);
-////	System.out.println(data.vehicleEnds[0]);
-////	
-////	for (int i = 0; i < 10; i++) {
-////	    for (int j = 0; j < 10; j++) {
-////		System.out.print(data.distanceMatrix[i][j] + "\t|");
-////	    }
-////	    System.out.println("");
-////	}
-////	System.out.println("");
-////	for (int i = 0; i < 10; i++) {
-////	    for (int j = 0; j < 10; j++) {
-////		System.out.print(data.timeMatrix[i][j] + "\t|");
-////	    }
-////	    System.out.println("");
-////	}
-////	
-////	for (int j = 0; j < 10; j++) {
-////	    System.out.println(data.deliveryTimes[j]);
-////	}
-////	
-////	System.out.println(data.vehicleSmallLetterCapacity[0]);
-////	System.out.println(data.vehicleLargeLetterCapacity[0]);
-////	System.out.println(data.vehicleCargoCapacity[0]);
-////	
-////	for (int j = 0; j < 10; j++) {
-////	    System.out.print(data.smallLetterDemands[j] + " | ");
-////	    System.out.print(data.largeLetterDemands[j] + " | ");
-////	    System.out.println(data.cargoDemands[j]);
-////	}
+//
+//	System.out.println(data.vehicleStarts[0]);
+//	System.out.println(data.vehicleEnds[0]);
+//	
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(data.distanceMatrix[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
+//	System.out.println("");
+//	for (int i = 0; i < 10; i++) {
+//	    for (int j = 0; j < 10; j++) {
+//		System.out.print(data.timeMatrix[i][j] + "\t|");
+//	    }
+//	    System.out.println("");
+//	}
+//	
+//	for (int j = 0; j < 10; j++) {
+//	    System.out.println(data.deliveryTimes[j]);
+//	}
+//	
+//	System.out.println(data.vehicleSmallLetterCapacity[0]);
+//	System.out.println(data.vehicleLargeLetterCapacity[0]);
+//	System.out.println(data.vehicleCargoCapacity[0]);
+//	
+//	for (int j = 0; j < 10; j++) {
+//	    System.out.print(data.smallLetterDemands[j] + " | ");
+//	    System.out.print(data.largeLetterDemands[j] + " | ");
+//	    System.out.println(data.cargoDemands[j]);
+//	}
 //	
 //	RoutingSolver rs = new RoutingSolver(data);
 //
 //	rs.solve();
-//	rs.printSolution();
+//	//rs.printSolution();
 //	
 //	JsonEncryptor enc = new JsonEncryptor(dt, rs.getSolution());
 //	enc.writePlaning();

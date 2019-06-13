@@ -3,9 +3,9 @@ package fr.uha.ensisa.project.smartUHA.model;
 public class Mailbox {
 
     private String name;
-    private boolean isEmpty ;
+    private int isEmpty ;
     
-    public Mailbox(String name, boolean isEmpty) {
+    public Mailbox(String name, int isEmpty) {
 	this.name = name;
 	this.isEmpty = isEmpty;
     }
@@ -19,8 +19,12 @@ public class Mailbox {
         return name;
     }
 
-    public boolean isEmpty() {
+    public int isEmpty() {
         return isEmpty;
+    }
+
+    public int getIsEmpty() {
+	return isEmpty;
     }
     
     
