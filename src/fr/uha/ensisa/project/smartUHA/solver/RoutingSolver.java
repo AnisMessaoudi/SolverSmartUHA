@@ -167,51 +167,62 @@ static {System.loadLibrary("jniortools");}
     }
     
     /* return path (succession of location) for each vehicle  */
-    public long[][] getSolution() {
+    public long[][] getSolution() throws Exception {
 	long[][] sol = new long[data.vehicleNumber][data.nodeNumber - 1];
-	for (int i = 0; i < data.vehicleNumber; i++) {
-	    long index = model.start(i);
-	    int j=0;
-	    while (!model.isEnd(index)) {
-		long nodeIndex = manager.indexToNode(index);
-		sol[i][j]= nodeIndex;
-		index = solution.value(model.nextVar(index));
-		j++;
+	if (solution != null) {
+	    for (int i = 0; i < data.vehicleNumber; i++) {
+		long index = model.start(i);
+		int j=0;
+		while (!model.isEnd(index)) {
+		    long nodeIndex = manager.indexToNode(index);
+		    sol[i][j]= nodeIndex;
+		    index = solution.value(model.nextVar(index));
+		    j++;
+		}
 	    }
+	    return sol;
 	}
-	return sol;
+	else 
+	    throw new Exception("notFoundSolution");
+	
+	
     }
     
     /* print the succession of location with some info (date, capacity) for each vehicle */
-    public void printSolution() {
-	RoutingDimension timeDimension = model.getMutableDimension("Time");
-	StringBuilder sb = new StringBuilder();
-	for (int i = 0; i < data.vehicleNumber; ++i) {
-	    long index = model.start(i);
-	    long routeDistance = 0;
-	    long smallLoad  = 0;
-	    long largeLoad = 0;
-	    long cargoLoad = 0;
-	    sb.append("Route for Vehicle " + i + ":\n");
-	    while (!model.isEnd(index)) {
-		long nodeIndex = manager.indexToNode(index);
-		IntVar timeVar = timeDimension.cumulVar(index);
-		Date date = new Date(solution.value(timeVar));
-		smallLoad+= data.smallLetterDemands[(int) nodeIndex];
-		largeLoad+= data.largeLetterDemands[(int) nodeIndex];
-		cargoLoad+= data.cargoDemands[(int) nodeIndex];
-		sb.append(nodeIndex);
-		sb.append(" : date(" + date + "),");
-		sb.append(" \n\t smallCapacite(" + smallLoad + "/" + data.vehicleSmallLetterCapacity[i] + "),");
-		sb.append(" \n\t largeCapacite(" + largeLoad + "/" + data.vehicleLargeLetterCapacity[i] + "),");
-		sb.append(" \n\t cargoCapacite(" + cargoLoad + "/" + data.vehicleCargoCapacity[i] + ")");
-		sb.append("  ->\n");
-		long previousIndex = index;
-		index = solution.value(model.nextVar(index));
-		routeDistance += model.getArcCostForVehicle(previousIndex, index, i);
+    public void printSolution() throws Exception {
+	if (solution != null) {
+	    RoutingDimension timeDimension = model.getMutableDimension("Time");
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < data.vehicleNumber; ++i) {
+		long index = model.start(i);
+		long routeDistance = 0;
+		long smallLoad  = 0;
+		long largeLoad = 0;
+		long cargoLoad = 0;
+		sb.append("Route for Vehicle " + i + ":\n");
+		while (!model.isEnd(index)) {
+		    long nodeIndex = manager.indexToNode(index);
+		    IntVar timeVar = timeDimension.cumulVar(index);
+		    Date date = new Date(solution.value(timeVar));
+		    smallLoad+= data.smallLetterDemands[(int) nodeIndex];
+		    largeLoad+= data.largeLetterDemands[(int) nodeIndex];
+		    cargoLoad+= data.cargoDemands[(int) nodeIndex];
+		    sb.append(nodeIndex);
+		    sb.append(" : date(" + date + "),");
+		    sb.append(" \n\t smallCapacite(" + smallLoad + "/" + data.vehicleSmallLetterCapacity[i] + "),");
+		    sb.append(" \n\t largeCapacite(" + largeLoad + "/" + data.vehicleLargeLetterCapacity[i] + "),");
+		    sb.append(" \n\t cargoCapacite(" + cargoLoad + "/" + data.vehicleCargoCapacity[i] + ")");
+		    sb.append("  ->\n");
+		    long previousIndex = index;
+		    index = solution.value(model.nextVar(index));
+		    routeDistance += model.getArcCostForVehicle(previousIndex, index, i);
+		}
+		sb.append("\nDistance of the route: " + routeDistance + "m\n");
 	    }
-	    sb.append("\nDistance of the route: " + routeDistance + "m\n");
+	    System.out.println(sb.toString());
 	}
-	System.out.println(sb.toString());
+	else {
+	    throw new Exception("notFoundSolution");
+	}
     }
 }
