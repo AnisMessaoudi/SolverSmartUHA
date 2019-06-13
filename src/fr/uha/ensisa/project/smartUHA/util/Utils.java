@@ -36,20 +36,27 @@ public class Utils {
 	    {0, 0, 0, 0},
     };
     public static long [][] globalTimeMatrix= {
-	    {0, 57, 103, 95},
-	    {57, 0, 48, 42},
-	    {103, 48, 0, 12},
-	    {95, 42, 12, 0},
+	    {000000, 57000, 103000, 95000},
+	    {057000, 00000, 48000,  42000},
+	    {103000, 48000, 00000,  12000},
+	    {95000,  42000, 12000,  00000},
     };
     
     /* map between index's and id's location */
     public static Map<Integer, String> globalNodeTable = new HashMap<>();
+
+    public static Map<String, String> globalNameToId = new HashMap<>();
     
     static {
 	globalNodeTable.put(0, "5ce80b22293b8439240d18d4"); //Lumiere
 	globalNodeTable.put(1, "5ce80b26293b8439240d18d6"); //Werner
 	globalNodeTable.put(2, "5cec2a33309a532ebc59dbb6"); //FLSH
 	globalNodeTable.put(3, "5cec2a4edaa0821eec2d9802"); //BU
+	
+	globalNameToId.put("Lumiere", "5ce80b22293b8439240d18d4");
+	globalNameToId.put("Werner", "5ce80b26293b8439240d18d6");
+	globalNameToId.put("FLSH", "5cec2a33309a532ebc59dbb6");
+	globalNameToId.put("BU", "5cec2a4edaa0821eec2d9802");
     }
     
 
