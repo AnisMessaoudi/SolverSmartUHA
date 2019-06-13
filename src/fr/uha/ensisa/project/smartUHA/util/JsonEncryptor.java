@@ -55,7 +55,6 @@ public class JsonEncryptor {
 		String actualDestId = dt.getNodeTable().get(location);
 		if(j < dt.getNodeNumber() - 2 ) {
 		    while(actualDestId.equals(dt.getNodeTable().get((int) solution[i][j+1]))) {
-			System.out.println(dt.getNodeTable().get(location));
 			JSONObject demand2 = new JSONObject();
 			demand2.put("$oid", dt.getDemands().get((j-dt.getVehicleNumber()+1)/2).getId());
 			demands.add(demand2);
